@@ -1,4 +1,4 @@
-from connection import db_connection
+from .connection import db_connection
 import mysql.connector
 
 #Arpoo satunnaisen lentokentän  ja  palautta sen
@@ -66,7 +66,7 @@ def select_all_airports():
 # Hakee kaikki lentokentät tietystä maasta
 def select_airports_by_country(country_name):
     db = db_connection()
-    airport_query = "SELECT airport.name AS airport_name, airport.ident AS airport_icao, airport.type AS airport_type, airport.latitude_deg AS lat, airport.longitude_deg AS lon, country.name AS country_name FROM airport INNER JOIN country  ON airport.iso_country = country.iso_country WHERE country.name = %s AND airport.type = 'large_airport'"
+    airport_query = "SELECT airport.name AS airport_name, airport.ident AS airport_icao, airport.type AS airport_type, airport.latitude_deg AS lat, airport.longitude_deg AS lon, country.name AS country_name FROM airport INNER JOIN country  ON airport.iso_country = country.iso_country WHERE country.name = %s"
     try:
         cursor = db.cursor(dictionary=True)
         cursor.execute(airport_query, (country_name, ))

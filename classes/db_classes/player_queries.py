@@ -1,4 +1,4 @@
-from connection import db_connection
+from .connection import db_connection
 import mysql.connector
 
 def create_player(name, location):

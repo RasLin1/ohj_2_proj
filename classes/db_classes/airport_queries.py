@@ -31,6 +31,7 @@ def select_specific_airport(icao):
         cursor = db.cursor(dictionary=True)
         cursor.execute(airport_query, (icao,))
         query_return = cursor.fetchone()
+        print(query_return)
         if query_return:
            return query_return
         else:

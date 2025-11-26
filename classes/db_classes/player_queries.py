@@ -39,12 +39,12 @@ def select_specific_player(id):
         cursor.close()
         db.close()
 
-def move_player(player, new_location, current_fuel):
+def move_player(id, new_location, current_fuel):
     db = db_connection()
     move_player_query = f"UPDATE player SET player_location = %s, fuel = %s WHERE player_id = %s"
     try: 
         cursor = db.cursor(dictionary=True)
-        cursor.execute(move_player_query, (new_location, current_fuel, player["id"]))
+        cursor.execute(move_player_query, (new_location, current_fuel, id))
         db.commit()
         if cursor.rowcount > 0:
             return True

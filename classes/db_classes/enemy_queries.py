@@ -62,12 +62,12 @@ def select_specific_creature(id):
         cursor.close()
         db.close()
 
-def move_creature(creature, new_location):
+def move_creature(id, new_location):
     db = db_connection()
     move_creature_query = f"UPDATE game_creatures SET creature_location = %s WHERE id = %s"
     try: 
         cursor = db.cursor(dictionary=True)
-        cursor.execute(move_creature_query, (new_location, creature["id"]))
+        cursor.execute(move_creature_query, (new_location, id))
         db.commit()
         if cursor.rowcount > 0:
             return True

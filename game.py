@@ -1,7 +1,8 @@
 from classes.entity_classes.enemies import Enemy
 from classes.entity_classes.player import Player
-from classes.db_classes.airport_queries import select_random_airport_location, select_specific_airport
-from geopy.distance import geodesic
+from classes.db_classes.airport_queries import select_random_airport_location, select_specific_airport, select_all_airports
+from functions.game_functions import probe_interaction, select_closest_airports, current_distance
+import random
 
 def play():
     round = 1
@@ -11,9 +12,40 @@ def play():
     enemies = []
     for x in range(monster_amount):
         enemy = Enemy(f'Ent{x}', select_random_airport_location(), player.id)
+        enemy.print_data()
         enemies.append(enemy)
     while allow_game:
-        player.current_location()
+        #The players turn starts here 
+        #Asks the player for their action
+        round_action = input("Kirjoita 'S' jos haluat siirtää paikkaa | Kirjoita 'L' jos haluat levätä: ").upper()
+        #Starts the procedure for movement
+        if round_action == 'S':
+            #Retrieves the closest airport, amount determined by the first value
+            closest_airports = select_closest_airports(10, player.cordinates)
+            for x in closest_airports:
+                print(f'Nimi: {x["a_name"]} | ICAO-koodi: {x["airport_icao"]} | Distance: {x["distance"]}')
+            target_airport = select_specific_airport(input("Anna lentokentän icao-koodi jonne haluat siirtyä: ").upper())
+            #Updates the players location both in db and the objective
+            player.move_player(target_airport, player.fuel - float(current_distance(player.cordinates, (target_airport['lat'], target_airport['lon']))))
+        for x in enemies:
+            print("DEBUG: enemy movement starting")
+            decision = x.move_decision()
+            print(f"DEBUG: enemy movement decision is {decision}")
+            if decision == 1:
+                x.move_enemy(select_closest_airports(10, x.cordinates)[random.randint(0, 9)])
+            elif decision == 2:
+                airport_found = False
+                while airport_found == False:
+                    rand_airport = select_random_airport_location()
+                    dist = float(current_distance(x.cordinates, (rand_airport['lat'], rand_airport['lon'])))
+                    if 500.00<dist<2000.00:
+                        airport_found = x.move_enemy(rand_airport)
+                        x.print_data()
+        else:
+            print("Move invalid input")
+        
+
+
         
 
 

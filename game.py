@@ -32,7 +32,9 @@ def play():
             decision = x.move_decision()
             print(f"DEBUG: enemy movement decision is {decision}")
             if decision == 1:
-                x.move_enemy(select_closest_airports(10, x.cordinates)[random.randint(0, 9)])
+                target = select_closest_airports(10, x.cordinates)[random.randint(0, 9)]
+                print(target)
+                x.move_enemy(target)
             elif decision == 2:
                 airport_found = False
                 while airport_found == False:

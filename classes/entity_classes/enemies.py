@@ -28,11 +28,12 @@ class Enemy(Entity):
         if airport == False:
             return False
         else:
+            print(airport)
             move = move_creature(self.id, airport['airport_icao'])
             if move:
                 self.location = airport['airport_icao']
                 self.location_name = airport['a_name']
                 self.cordinates = (airport['lat'], airport['lon'])
+                return True
             else:
                 return False
-            return True

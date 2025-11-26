@@ -17,7 +17,7 @@ def select_closest_airports(amount, player_cordinates):
          distance = float(current_distance(player_cordinates, (x["lat"], x["lon"])))
          if distance == 0.0:
               continue
-         temp_airport_dictionary = {"airport_name": x["airport_name"],"airport_icao": x["airport_icao"], "distance": distance}
+         temp_airport_dictionary = {"a_name": x["a_name"],"airport_icao": x["airport_icao"], "distance": distance}
          airport_distances.append(temp_airport_dictionary)
     airport_distances.sort(key=lambda a: float(a["distance"]))
     closest_airports = airport_distances[:amount]

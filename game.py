@@ -16,7 +16,6 @@ def play():
         enemies.append(enemy)
     while allow_game:
         #The players turn starts here 
-        player.current_location()
         #Asks the player for their action
         round_action = input("Kirjoita 'S' jos haluat siirtää paikkaa | Kirjoita 'L' jos haluat levätä: ").upper()
         #Starts the procedure for movement
@@ -24,7 +23,7 @@ def play():
             #Retrieves the closest airport, amount determined by the first value
             closest_airports = select_closest_airports(10, player.cordinates)
             for x in closest_airports:
-                print(f'Nimi: {x["airport_name"]} | ICAO-koodi: {x["airport_icao"]} | Distance: {x["distance"]}')
+                print(f'Nimi: {x["a_name"]} | ICAO-koodi: {x["airport_icao"]} | Distance: {x["distance"]}')
             target_airport = select_specific_airport(input("Anna lentokentän icao-koodi jonne haluat siirtyä: ").upper())
             #Updates the players location both in db and the objective
             player.move_player(target_airport, player.fuel - float(current_distance(player.cordinates, (target_airport['lat'], target_airport['lon']))))
@@ -42,10 +41,6 @@ def play():
                     if 500.00<dist<2000.00:
                         airport_found = x.move_enemy(rand_airport)
                         x.print_data()
-
-
-
-
         else:
             print("Move invalid input")
         

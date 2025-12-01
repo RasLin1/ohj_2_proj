@@ -1,5 +1,6 @@
 from .connection import db_connection
 import mysql.connector
+import random
 
 #Arpoo satunnaisen tapahtuman ja palautta sen
 def select_random_event():

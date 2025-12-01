@@ -1,6 +1,7 @@
 from classes.entity_classes.enemies import Enemy
 from classes.entity_classes.player import Player
 from classes.db_classes.airport_queries import select_random_airport_location, select_specific_airport, select_all_airports
+from classes.db_classes.event_queries import select_random_event
 from functions.game_functions import probe_interaction, select_closest_airports, current_distance
 import random
 
@@ -27,6 +28,11 @@ def play():
             target_airport = select_specific_airport(input("Anna lentokentän icao-koodi jonne haluat siirtyä: ").upper())
             #Updates the players location both in db and the objective
             player.move_player(target_airport, player.fuel - float(current_distance(player.cordinates, (target_airport['lat'], target_airport['lon']))))
+        if round_action == 'L':
+            event_chance = random.randint(1, 3)
+            if event_chance == 3:
+                event = select_random_event()
+                
         for x in enemies:
             print("DEBUG: enemy movement starting")
             decision = x.move_decision()

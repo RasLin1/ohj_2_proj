@@ -7,6 +7,19 @@
     <link href="main_menu.css" rel="stylesheet">
 </head>
 <body>
-
+    <section id="select_screen">
+        <button type="button" id="new_game" value="New Game">New Game</button>
+        <button type="button" id="highscores" value="Highscores">Highscores</button>
+    </section>
 </body>
+<dialog id="name_input">
+    <span>&#x2715;</span>
+    <input
+        type="text"
+        id="player_name"
+        value="Player Name"
+        minlength="1"
+        maxlength="12"/>
+    <input type="submit" value="Submit Player Name">
+</dialog>
 </html>

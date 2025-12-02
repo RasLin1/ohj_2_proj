@@ -1,0 +1,49 @@
+body {
+    background-color: cornflowerblue;
+    padding: 0;
+    margin: 0;
+}
+
+section {
+    width: 80%;
+    height: 70%;
+    padding: 10%;
+    justify-content: space-evenly;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+button {
+    width: 60%;
+    display: block;
+    cursor: pointer;
+    border-radius: 1rem;
+    border: 1rem solid #b4cfdc;
+    padding: 1rem;
+    margin: 2.5rem;
+    font-size: 4rem;
+    text-align: center;
+}
+
+dialog {
+    width: 20rem;
+    height: 2rem;
+    align-content: center;
+    border: 0.5rem solid #b4cfdc;
+}
+
+dialog span {
+  position: absolute;
+  top: 1.2rem;
+  right: 1rem;
+  font-size: 1rem;
+  text-decoration: none;
+  color: #fff;
+  filter: drop-shadow(2px 2px 2px #000);
+}
+
+dialog span:hover {
+    cursor: pointer;
+    background-color: rgb(1 1 1 / 10%);
+}

@@ -13,4 +13,6 @@ attack.addEventListener('click', function(){
   //add attack functionality
 })
 
-item.addEventListener('click', function())
+item.addEventListener('click', function(){
+
+})

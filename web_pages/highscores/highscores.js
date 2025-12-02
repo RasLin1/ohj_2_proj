@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const x = document.querySelector('span');
 x.addEventListener('click', function() {

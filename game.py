@@ -4,17 +4,27 @@ from classes.db_classes.airport_queries import select_random_airport_location, s
 from classes.db_classes.event_queries import select_random_event
 from functions.game_functions import probe_interaction, select_closest_airports, current_distance
 import random
+from flask import Flask, request, json
+
+app = Flask(__name__)
+@app.route("/mh_game")
 
 def play():
+    player_name = request.args.get("name", "Anonymous")
     round = 1
     monster_amount = 3
     allow_game = True
-    player = Player(input('Anna pelaajan nimi: ') ,select_random_airport_location())
+    player = Player(player_name, select_random_airport_location())
     enemies = []
+    dict_enemies = []
     for x in range(monster_amount):
         enemy = Enemy(f'Ent{x}', select_random_airport_location(), player.id)
         enemy.print_data()
         enemies.append(enemy)
+    response = {
+        "Player": player.__dict__
+    }
+    return json.dumps(response)
     while allow_game:
         #The players turn starts here 
         #Asks the player for their action
@@ -53,13 +63,5 @@ def play():
             print("Move invalid input")
         
 
-
-        
-
-
-
-
-
-
-if __name__ == '__main__':
-    play()
+if __name__ == "__main__":
+    app.run(debug=True)

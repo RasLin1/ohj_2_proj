@@ -33,11 +33,21 @@ button {
 h3 {
     justify-content: center;
     display: flex;
+    margin: 0.5rem;
+}
+
+#quit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2%;
+    font-size: 1rem;
 }
 
 #stats {
     display: flex;
     flex-wrap: wrap;
+    padding-left: 3rem;
 }
 
 ul {
@@ -72,15 +82,15 @@ li:hover {
 }
 
 #main_gameX {
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-  font-size: 1rem;
-  text-decoration: none;
-  color: #fff;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    font-size: 1rem;
+    text-decoration: none;
+    color: #fff;
 }
 
-span:hover{
+span:hover {
     cursor: pointer;
 }
 
@@ -101,7 +111,7 @@ span:hover{
     flex-wrap: wrap;
     width: 8%;
     justify-content: space-evenly;
-    background-color: rgba(181,78,86,0.4)
+    background-color: rgba(181, 78, 86, 0.4)
 }
 
 #battle p {
@@ -117,12 +127,12 @@ span:hover{
     flex-wrap: wrap;
     width: 8%;
     justify-content: space-evenly;
-    background-color: rgba(181,78,86,0.4)
+    background-color: rgba(181, 78, 86, 0.4)
 }
 
 #turn_options {
     width: 80%;
-    background-color: rgba(181,78,86,0.4);
+    background-color: rgba(181, 78, 86, 0.4);
     display: flex;
     justify-content: space-evenly;
     margin-left: 10%;
@@ -153,10 +163,10 @@ span:hover{
 }
 
 #in_battleX {
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-  font-size: 1rem;
-  text-decoration: none;
-  color: #fff;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    font-size: 1rem;
+    text-decoration: none;
+    color: #fff;
 }

@@ -21,10 +21,10 @@ def play():
         enemy = Enemy(f'Ent{x}', select_random_airport_location(), player.id)
         enemy.print_data()
         enemies.append(enemy)
-        response = {
-            "Player": player.__dict__
-        }
-        return json.dumps(response)
+    response = {
+        "Player": player.__dict__
+    }
+    return json.dumps(response)
     while allow_game:
         #The players turn starts here 
         #Asks the player for their action

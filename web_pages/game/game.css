@@ -15,8 +15,6 @@ body {
 button {
     width: 100%;
     font-size: 1.5rem;
-
-
 }
 
 #map {
@@ -30,7 +28,6 @@ button {
 #stats_log {
     width: 25%;
     color: white;
-
 }
 
 h3 {
@@ -48,8 +45,9 @@ ul {
 }
 
 #game_text {
+    height: 68%;
     margin: 1rem;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 #item_list {
@@ -59,7 +57,6 @@ ul {
     top: 25%;
     left: 10%;
     margin: 0;
-
 }
 
 #item_list ul {
@@ -73,6 +70,7 @@ li {
 li:hover {
     cursor: pointer;
 }
+
 #main_gameX {
   position: absolute;
   top: 0.5rem;

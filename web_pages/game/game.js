@@ -20,6 +20,7 @@ const item_list_battle = document.getElementById('item_list_battle');
 const battle_x = document.getElementById('in_battleX');
 const li = document.querySelector('li');
 const quit = document.getElementById('quit');
+const quit_battle = document.getElementById('quit_battle')
 
 move.addEventListener('click', function() {
   //add movement selection functionality
@@ -72,6 +73,16 @@ li.addEventListener('click', function() {
 });
 
 quit.addEventListener('click', function() {
+  let quit_game = confirm('Are you sure you want to quit?');
+  if (quit_game === true) {
+    //add save functionality?
+    window.location.href = '../main_menu/main_menu.html';
+  } else {
+    alert('Yay! Happy gaming <3');
+  }
+});
+
+quit_battle.addEventListener('click', function() {
   let quit_game = confirm('Are you sure you want to quit?');
   if (quit_game === true) {
     //add save functionality?

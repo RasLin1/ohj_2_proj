@@ -170,3 +170,11 @@ span:hover {
     text-decoration: none;
     color: #fff;
 }
+
+#quit_battle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3%;
+    font-size: 0.5rem;
+}

@@ -6,6 +6,36 @@ const rest = document.getElementById('rest');
 const fight = document.getElementById('fight');
 const item_list = document.getElementById('item_list');
 const x = document.querySelector('span');
+const stats = document.getElementById('stats');
+const hp = document.getElementById('hp');
+const fuel = document.getElementById('fuel');
+const money = document.getElementById('money');
+const apiShowsLink = 'http://127.0.0.1:5000/mh_game';
+//Starts game
+
+
+let i = 1;
+async function showRetAndPrint(evt) {
+    // ... prevent the default action.
+    evt.preventDefault();
+    // get value of input element
+    const code = document.getElementById('query').value;
+    try {                                               // error handling: try/catch/finally
+        const response = await fetch(`${apiShowsLink}?name=${code}`);    // starting data download, fetch returns a promise which contains an object of type 'response'
+        const jsonData = await response.json();          // retrieving the data retrieved from the response object using the json() function
+        console.log(jsonData);    // log the result to the console
+        hp.innerText = jsonData.hp;
+        fuel.innerText = jsonData.fuel;
+        money.innerText = jsonData.money;
+
+        stats.append(hp, fuel, money);
+        i++;
+        }
+        catch (error) {
+        console.log(error.message);
+    }
+}
+stats.addEventListener("load", showRetAndPrint);
 
 move.addEventListener('click', function() {
   //add movement selection functionality

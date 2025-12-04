@@ -14,16 +14,28 @@ def play():
     round = 1
     monster_amount = 3
     allow_game = True
+<<<<<<< HEAD
     player = Player(player_name ,select_random_airport_location())
+=======
+    player = Player(player_name, select_random_airport_location())
+>>>>>>> 05ae4333157aad4559ac62347550f10a7445a38f
     enemies = []
+    dict_enemies = []
     for x in range(monster_amount):
         enemy = Enemy(f'Ent{x}', select_random_airport_location(), player.id)
         enemy.print_data()
         enemies.append(enemy)
+<<<<<<< HEAD
     return json.dumps(player.__dict__)
 
 
 """
+=======
+    response = {
+        "Player": player.__dict__
+    }
+    return json.dumps(response)
+>>>>>>> 05ae4333157aad4559ac62347550f10a7445a38f
     while allow_game:
         #The players turn starts here 
         #Asks the player for their action
@@ -61,6 +73,7 @@ def play():
         else:
             print("Move invalid input")
         
+<<<<<<< HEAD
 """
 
         
@@ -71,4 +84,8 @@ def play():
 
 
 if __name__ == '__main__':
+=======
+
+if __name__ == "__main__":
+>>>>>>> 05ae4333157aad4559ac62347550f10a7445a38f
     app.run(debug=True)

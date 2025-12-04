@@ -15,8 +15,6 @@ body {
 button {
     width: 100%;
     font-size: 1.5rem;
-
-
 }
 
 #map {
@@ -30,17 +28,26 @@ button {
 #stats_log {
     width: 25%;
     color: white;
-
 }
 
 h3 {
     justify-content: center;
     display: flex;
+    margin: 0.5rem;
+}
+
+#quit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2%;
+    font-size: 1rem;
 }
 
 #stats {
     display: flex;
     flex-wrap: wrap;
+    padding-left: 3rem;
 }
 
 ul {
@@ -48,27 +55,126 @@ ul {
 }
 
 #game_text {
+    height: 68%;
     margin: 1rem;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 #item_list {
+    width: 20%;
+    height: 20%;
     background-color: black;
     top: 25%;
     left: 10%;
     margin: 0;
-
 }
 
-span {
-   position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-  font-size: 1rem;
-  text-decoration: none;
-  color: #fff;
+#item_list ul {
+    padding-left: 0;
 }
 
-span:hover{
+li {
+    color: white;
+}
+
+li:hover {
     cursor: pointer;
+}
+
+#main_gameX {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    font-size: 1rem;
+    text-decoration: none;
+    color: #fff;
+}
+
+span:hover {
+    cursor: pointer;
+}
+
+#battle {
+    width: 100%;
+    background-color: #4a2023;
+    height: 45rem;
+    background-image: url('placeholderMonster.png'), linear-gradient(black, transparent);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#monster_hp {
+    position: absolute;
+    top: 2rem;
+    left: 10%;
+    display: flex;
+    flex-wrap: wrap;
+    width: 8%;
+    justify-content: space-evenly;
+    background-color: rgba(181, 78, 86, 0.4)
+}
+
+#battle p {
+    margin: 0.5rem;
+    color: white;
+}
+
+#player_hp {
+    position: absolute;
+    bottom: 6rem;
+    right: 10%;
+    display: flex;
+    flex-wrap: wrap;
+    width: 8%;
+    justify-content: space-evenly;
+    background-color: rgba(181, 78, 86, 0.4)
+}
+
+#turn_options {
+    width: 80%;
+    background-color: rgba(181, 78, 86, 0.4);
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: 10%;
+    position: absolute;
+    bottom: 1rem;
+    padding: 1rem;
+}
+
+#battle button {
+    font-size: 2rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+#item_list_battle {
+    position: absolute;
+    background-color: black;
+    top: 42%;
+    left: 32%;
+    margin: 0;
+    height: 40%;
+    width: 18%;
+    z-index: 3000;
+}
+
+#item_list_battle ul {
+    padding-left: 0;
+}
+
+#in_battleX {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    font-size: 1rem;
+    text-decoration: none;
+    color: #fff;
+}
+
+#quit_battle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3%;
+    font-size: 0.5rem;
 }

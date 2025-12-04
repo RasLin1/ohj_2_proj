@@ -53,6 +53,8 @@ ul {
 }
 
 #item_list {
+    width: 20%;
+    height: 20%;
     background-color: black;
     top: 25%;
     left: 10%;
@@ -60,8 +62,19 @@ ul {
 
 }
 
-span {
-   position: absolute;
+#item_list ul {
+    padding-left: 0;
+}
+
+li {
+    color: white;
+}
+
+li:hover {
+    cursor: pointer;
+}
+#main_gameX {
+  position: absolute;
   top: 0.5rem;
   right: 1rem;
   font-size: 1rem;
@@ -124,4 +137,28 @@ span:hover{
     font-size: 2rem;
     margin-right: 0.5rem;
     margin-left: 0.5rem;
+}
+
+#item_list_battle {
+    position: absolute;
+    background-color: black;
+    top: 42%;
+    left: 32%;
+    margin: 0;
+    height: 40%;
+    width: 18%;
+    z-index: 3000;
+}
+
+#item_list_battle ul {
+    padding-left: 0;
+}
+
+#in_battleX {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 1rem;
+  text-decoration: none;
+  color: #fff;
 }

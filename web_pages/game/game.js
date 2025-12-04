@@ -6,6 +6,16 @@ const rest = document.getElementById('rest');
 const fight = document.getElementById('fight');
 const item_list = document.getElementById('item_list');
 const x = document.querySelector('span');
+const battle = document.getElementById('battle');
+const battle_screen = document.getElementById('battle_screen')
+const monster_name = document.getElementById('monster_name');
+const monster_hp = document.getElementById('monster_hp_percentage');
+const player_name = document.getElementById('player_name');
+const player_hp = document.getElementById('player_hp_percentage');
+const attack = document.getElementById('attack');
+const item_battle = document.getElementById('item_battle');
+const capture = document.getElementById('capture');
+const runaway = document.getElementById('run');
 
 move.addEventListener('click', function() {
   //add movement selection functionality
@@ -28,6 +38,23 @@ fight.addEventListener('click', function() {
   //add a check to see if its possible to fight
   let start_fight = confirm('Are you sure you want to fight?');
   if (start_fight === true) {
-    window.location.href = 'battle/battle.html';
+    battle.showModal();
   }
+});
+
+attack.addEventListener('click', function() {
+  //add attack functionality
+});
+
+item_battle.addEventListener('click', function() {
+
+});
+
+capture.addEventListener('click', function() {
+
+});
+
+runaway.addEventListener('click', function() {
+  //add a check on if running is a success
+  battle.close();
 });

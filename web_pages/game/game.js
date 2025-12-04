@@ -58,6 +58,23 @@ fight.addEventListener('click', function() {
   //add a check to see if its possible to fight
   let start_fight = confirm('Are you sure you want to fight?');
   if (start_fight === true) {
-    window.location.href = 'battle/battle.html';
+    battle.showModal();
   }
+});
+
+attack.addEventListener('click', function() {
+  //add attack functionality
+});
+
+item_battle.addEventListener('click', function() {
+
+});
+
+capture.addEventListener('click', function() {
+
+});
+
+runaway.addEventListener('click', function() {
+  //add a check on if running is a success
+  battle.close();
 });

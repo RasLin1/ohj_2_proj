@@ -1,14 +1,17 @@
 from .entities import Entity
-from ..db_classes.enemy_queries import create_game_creature, select_random_creature, move_creature, update_creature_health
+from ..db_classes.enemy_queries import create_game_creature, select_random_creature, select_specific_creature, move_creature, update_creature_health
 import random
 
 class Enemy(Entity):
-    def __init__(self, name, airport, player_id):
-        super().__init__(name, airport)
-        self.id = create_game_creature(name, airport['airport_icao'], player_id)
+    def __init__(self, airport, player_id):
+        c = create_game_creature(airport['airport_icao'], player_id)
+        super().__init__(c["name"], airport)
+        self.id = c["id"]
+        self.dmg = c["damage"]
+        self.hp = c["health"]
     
     def print_data(self):
-        print(f'Enemy name: {self.name} | Location code: {self.location} | Id: {self.id}')
+        print(f'Enemy name: {self.name} | Location code: {self.location} | ID: {self.id} | HP: {self.hp} | DMG: {self.dmg}')
     
     def move_decision(self):
         movement_decision = random.randint(1,3)

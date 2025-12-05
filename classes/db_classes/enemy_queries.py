@@ -2,7 +2,7 @@ from .connection import db_connection
 import mysql.connector
 
 #Luo valitse ja luo hirviön peliä varten
-def create_game_creature(name, location, player_id):
+def create_game_creature(location, player_id):
     db = db_connection()
     select_creature = select_random_creature()
     create_game_creature_query = f"INSERT INTO game_creatures (player_id, creature_id, creature_location, creature_current_health, creature_captured) VALUES (%s, %s, %s, %s, %s)"
@@ -11,8 +11,9 @@ def create_game_creature(name, location, player_id):
         cursor.execute(create_game_creature_query, (player_id, select_creature["creature_id"], location, select_creature["creature_max_health"], False))
         db.commit()
         creature_id = cursor.lastrowid
-        if creature_id:
-            return creature_id
+        creature = select_specific_creature(creature_id)
+        if creature:
+            return creature
         else:
             print("DEBUG: No ID returned — insert may have failed or triggered constraint.")
             return False

@@ -1,5 +1,5 @@
 from .entities import Entity
-from ..db_classes.player_queries import create_player, move_player, update_player_health
+from ..db_classes.player_queries import create_player, move_player, update_player_health, update_player_value
 
 
 class Player(Entity):
@@ -36,4 +36,17 @@ class Player(Entity):
             return True
         else:
             return False
+        
+    def update_other_value(self, val, type):
+        if type == "fuel":
+            self.fuel = self.fuel - val
+            change = update_player_value(type, self.fuel, self.id)
+        elif type == "money":
+            self.money = self.money - val
+            change = update_player_value(type, self.fuel, self.id)
+        if change:
+            return True
+        else: 
+            return False
+        
 

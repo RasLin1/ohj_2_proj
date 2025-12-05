@@ -1,5 +1,5 @@
 from .entities import Entity
-from ..db_classes.enemy_queries import create_game_creature, select_random_creature, move_creature
+from ..db_classes.enemy_queries import create_game_creature, select_random_creature, move_creature, update_creature_health
 import random
 
 class Enemy(Entity):
@@ -38,3 +38,11 @@ class Enemy(Entity):
                 return True
             else:
                 return False
+    
+    def update_health(self, dmg):
+        self.hp = self.hp - dmg
+        change = update_creature_health(self.id, dmg)
+        if change:
+            return True
+        else:
+            return False

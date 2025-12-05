@@ -23,11 +23,17 @@ def startGame():
         enemies.append(enemy)
     return json.dumps(player.__dict__)
 
+def selectAllAirports():
+    airports = select_all_airports()
+    return json.dumps(airports)
+
 def movePlayer():
     l = request.args.get("loc", player.location)
     target_airport = select_specific_airport(l)
     player.move_player(target_airport, player.fuel - float(current_distance(player.cordinates, (target_airport['lat'], target_airport['lon']))))
     return json.dumps(target_airport)
+
+
 """
     while allow_game:
         #The players turn starts here 

@@ -84,17 +84,12 @@ def update_player_health(id, health_change):
         db.close()
 
 #Modular funktion that works for player fuel or money
-def update_player_value(value_name, value_change, id):
+def update_player_value(value_name, new_value, id):
     allowed_columns  = ["fuel", "money"]
     if value_name not in allowed_columns:
         print(f"DEBUG: Invalid column name: {value_name}")
         return False
     db = db_connection()
-    select_player_query = f"SELECT {value_name} FROM player WHERE player_id = %s"
-    cursor = db.cursor(dictionary=True)
-    cursor.execute(select_player_query, (id, ))
-    query_return = cursor.fetchone()
-    new_value = query_return[f"{value_name}"] + (value_change)
     cursor =  db.cursor()
     update_player_query = f"UPDATE player SET {value_name} = %s WHERE player_id = %s"
     try: 
@@ -104,7 +99,7 @@ def update_player_value(value_name, value_change, id):
         if cursor.rowcount > 0:
             return True
         else:
-            print("DEBUG: Error in updating value health")
+            print("DEBUG: Error in updating value")
             return False
     except mysql.connector.Error as err:
         print("DEBUG: Error while updating player value")

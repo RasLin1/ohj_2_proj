@@ -9,22 +9,32 @@ from flask import Flask, request, json
 app = Flask(__name__)
 @app.route("/mh_game")
 
-def play():
+def startGame():
     player_name = request.args.get("name", "Anonymous")
     round = 1
     monster_amount = 3
-    allow_game = True
-    player = Player(player_name, select_random_airport_location())
+    global player
+    player = Player(player_name ,select_random_airport_location())
+    global enemies
     enemies = []
-    dict_enemies = []
     for x in range(monster_amount):
         enemy = Enemy(f'Ent{x}', select_random_airport_location(), player.id)
         enemy.print_data()
         enemies.append(enemy)
-    response = {
-        "Player": player.__dict__
-    }
-    return json.dumps(response)
+    return json.dumps(player.__dict__)
+
+def selectAllAirports():
+    airports = select_all_airports()
+    return json.dumps(airports)
+
+def movePlayer():
+    l = request.args.get("loc", player.location)
+    target_airport = select_specific_airport(l)
+    player.move_player(target_airport, player.fuel - float(current_distance(player.cordinates, (target_airport['lat'], target_airport['lon']))))
+    return json.dumps(target_airport)
+
+
+"""
     while allow_game:
         #The players turn starts here 
         #Asks the player for their action
@@ -61,7 +71,14 @@ def play():
                         x.print_data()
         else:
             print("Move invalid input")
+        """
+
         
 
-if __name__ == "__main__":
+
+
+
+
+
+if __name__ == '__main__':
     app.run(debug=True)

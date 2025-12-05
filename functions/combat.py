@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+from  import update_entity_health
+=======
 from creatures import update_entity_health
+>>>>>>> 05ae4333157aad4559ac62347550f10a7445a38f
 from db import select_specific_creature, select_specific_player
 import random
 

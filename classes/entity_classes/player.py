@@ -10,9 +10,10 @@ class Player(Entity):
         self.money  = 100
         self.max_hp = 100
         self.hp = 100
+        self.dmg = 10
     
     def current_location(self):
-        print(f'Player name: {self.name} | Location code: {self.location} | Id: {self.id}')
+        print(f'Player name: {self.name} | Location code: {self.location} | ID: {self.id} | HP: {self.hp} | DMG: {self.dmg}')
     
     def move_player(self, airport, distance):
         if airport == False:

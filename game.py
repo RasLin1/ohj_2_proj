@@ -7,8 +7,8 @@ import random
 from flask import Flask, request, json
 
 app = Flask(__name__)
-@app.route("/mh_game")
 
+@app.route("/mh_game/startGame")
 def startGame():
     player_name = request.args.get("name", "Anonymous")
     round = 1
@@ -18,20 +18,26 @@ def startGame():
     global enemies
     enemies = []
     for x in range(monster_amount):
-        enemy = Enemy(f'Ent{x}', select_random_airport_location(), player.id)
+        enemy = Enemy(select_random_airport_location(), player.id)
         enemy.print_data()
         enemies.append(enemy)
     return json.dumps(player.__dict__)
 
+@app.route("/mh_game/selectAllAirports")
 def selectAllAirports():
     airports = select_all_airports()
     return json.dumps(airports)
 
+@app.route("/mh_game/movePlayer")
 def movePlayer():
-    l = request.args.get("loc", player.location)
+    global player
+    l = request.args.get("location", player.location)
     target_airport = select_specific_airport(l)
     player.move_player(target_airport, player.fuel - float(current_distance(player.cordinates, (target_airport['lat'], target_airport['lon']))))
-    return json.dumps(target_airport)
+    return json.dumps({
+        "player": player.__dict__,
+        "target_airport": target_airport
+    })
 
 
 """

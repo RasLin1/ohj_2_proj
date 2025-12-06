@@ -32,12 +32,20 @@ def selectAllAirports():
 def movePlayer():
     global player
     l = request.args.get("location", player.location)
-    target_airport = select_specific_airport(l)
-    player.move_player(target_airport, player.fuel - float(current_distance(player.cordinates, (target_airport['lat'], target_airport['lon']))))
-    return json.dumps({
-        "player": player.__dict__,
-        "target_airport": target_airport
-    })
+    try:
+        target_airport = select_specific_airport(l)
+        player.move_player(target_airport, player.fuel - float(current_distance(player.cordinates, (target_airport['lat'], target_airport['lon']))))
+        response = {
+            "player": player.__dict__,
+            "target_airport": target_airport
+        }
+    except TypeError:
+        target_airport = select_specific_airport(player.location)
+        response = {
+            "player": player.__dict__,
+            "target_airport": target_airport
+        }
+    return json.dumps(response)
 
 
 """
@@ -87,4 +95,4 @@ def movePlayer():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug = True, use_reloader = True, host='127.0.0.1', port=3000)

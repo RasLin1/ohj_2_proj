@@ -47,6 +47,59 @@ def movePlayer():
         }
     return json.dumps(response)
 
+@app.route("/mh_game/moveEnemies")
+def moveEnemies():
+    global enemies
+    decision_list = []
+    for x in enemies:
+        try:
+            decision = x.move_decision()
+            #Starts a close move
+            if decision == 1:
+                target = select_closest_airports(10, x.cordinates)[random.randint(0, 9)]
+                x.move_enemy(target)
+                response = {
+                    "Decision": "Close move",
+                    "Target": target["airport_icao"]
+                }
+                decision_list.append(response)
+            #Starts a far away move
+            elif decision == 2:
+                #
+                airport_found = False
+                attempts = 0
+                while not airport_found  and attempts < 500:
+                    rand_airport = select_random_airport_location()
+                    dist = float(current_distance(x.cordinates, (rand_airport['lat'], rand_airport['lon'])))
+                    if 500.00<dist<2000.00:
+                        airport_found = x.move_enemy(rand_airport)
+                        x.print_data()
+                    attempts += 1
+                if not airport_found:
+                    raise Exception("No valid airport found for far move")
+                response = {
+                    "Decision": "Far move",
+                    "Target": rand_airport["airport_icao"]
+                }
+                decision_list.append(response)
+            #No movement
+            else:
+                response = {
+                    "Decision": "No move",
+                    "Target": "No target"
+                }
+                decision_list.append(response)
+
+        except Exception as e:
+            #Should work as an error log
+            print("ERROR while moving enemy:", e)
+            response = {
+                "Decision": "Error",
+                "Error": str(e)
+            }
+            decision_list.append(response)
+    return json.dumps(decision_list)
+
 
 """
     while allow_game:

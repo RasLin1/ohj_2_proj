@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="add00fc7-8ac9-4f68-a3a1-81e7f46a4c03" name="Changes" comment="Jesse branch babyyy">
-      <change beforePath="$PROJECT_DIR$/.idea/ohj_2_proj.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ohj_2_proj.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/combat.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/combat.py" afterDir="false" />
-    </list>
+    <list default="true" id="add00fc7-8ac9-4f68-a3a1-81e7f46a4c03" name="Changes" comment="Keskeneräinen placeholder syystemi. Paljon todennäköisesti muutettavaa" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -243,6 +239,7 @@
       <workItem from="1764941171622" duration="3859000" />
       <workItem from="1764947921470" duration="5301000" />
       <workItem from="1765049905272" duration="2684000" />
+      <workItem from="1765116374787" duration="325000" />
     </task>
     <task id="LOCAL-00001" summary="Jesse branch babyyy">
       <option name="closed" value="true" />
@@ -260,7 +257,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764841209619</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Keskeneräinen placeholder syystemi. Paljon todennäköisesti muutettavaa">
+      <option name="closed" value="true" />
+      <created>1765116421197</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1765116421197</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,7 +273,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Jesse branch babyyy" />
-    <option name="LAST_COMMIT_MESSAGE" value="Jesse branch babyyy" />
+    <MESSAGE value="Keskeneräinen placeholder syystemi. Paljon todennäköisesti muutettavaa" />
+    <option name="LAST_COMMIT_MESSAGE" value="Keskeneräinen placeholder syystemi. Paljon todennäköisesti muutettavaa" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ohj_2_proj$game.coverage" NAME="game Coverage Results" MODIFIED="1764840091203" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

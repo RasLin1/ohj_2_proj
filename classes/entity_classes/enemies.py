@@ -1,5 +1,5 @@
 from .entities import Entity
-from ..db_classes.enemy_queries import create_game_creature, select_random_creature, select_specific_creature, move_creature, update_creature_health
+from ..db_classes.enemy_queries import create_game_creature, select_specific_creature, move_creature, update_creature_health, update_creature_captured_status
 import random
 
 class Enemy(Entity):
@@ -9,6 +9,7 @@ class Enemy(Entity):
         self.id = c["id"]
         self.dmg = c["damage"]
         self.hp = c["health"]
+        self.captured = False
     
     def print_data(self):
         print(f'Enemy name: {self.name} | Location code: {self.location} | ID: {self.id} | HP: {self.hp} | DMG: {self.dmg}')
@@ -49,3 +50,7 @@ class Enemy(Entity):
             return True
         else:
             return False
+    
+    def update_status(self, status_change):
+        self.captured = update_creature_captured_status(self.id, status_change)
+        return self.captured

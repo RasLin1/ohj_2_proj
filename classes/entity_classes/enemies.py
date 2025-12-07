@@ -51,6 +51,6 @@ class Enemy(Entity):
         else:
             return False
     
-    def update_status(self):
-        self.captured = update_creature_captured_status(self.id, True)
+    def update_status(self, status_change):
+        self.captured = update_creature_captured_status(self.id, status_change)
         return self.captured

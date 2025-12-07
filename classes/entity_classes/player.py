@@ -11,6 +11,9 @@ class Player(Entity):
         self.max_hp = 100
         self.hp = 100
         self.dmg = 10
+        self.equiped_list = []
+        self.inventory_list=[]
+
     
     def current_location(self):
         print(f'Player name: {self.name} | Location code: {self.location} | ID: {self.id} | HP: {self.hp} | DMG: {self.dmg}')

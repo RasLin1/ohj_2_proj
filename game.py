@@ -71,7 +71,7 @@ def moveEnemies():
                 decision_list.append(response)
             #Starts a far away move
             elif decision == 2:
-                #
+                #Should avoid an infinite loop
                 airport_found = False
                 attempts = 0
                 while not airport_found and attempts < 500:
@@ -108,6 +108,7 @@ def moveEnemies():
             decision_list.append(response)
     return json.dumps(decision_list)
 
+#Gets rand event from db and returns it's id and description
 @app.route("/mh_game/getRandomEvent")
 def getRandomEvent():
     try:
@@ -116,14 +117,17 @@ def getRandomEvent():
             "id": event["event_id"],
             "description": event["event_description"],
         }
+    #Should run if event is false
     except ValueError:
         response = {
             "error": "Failed retrieval of random event"
         }
     return json.dumps(response)
 
+#Checks given answer to the correct from db, updates player value based on reward and finally returns the result, player and event reward if correct and only result and correct answer if incorrect
 @app.route("/mh_game/checkEventAnswer")
 def checkEventAnswer():
+    #Lots of error handling and requesting args
     player_id = request.args.get("pid")
     if not player_id or player_id not in GAME_STATE:
         return json.dumps({"Error": "Missing or invalid player id"})
@@ -136,15 +140,20 @@ def checkEventAnswer():
     event = select_specific_event(event_id)
     if not event:
         return json.dumps({"Error": "Failed retrival of event"})
+    #Starts if answer is correct
     elif event["event_answer"] == user_answer:
+        #Gets the player
         player = GAME_STATE[player_id]["player"]
+        #Updates the appropriate value for object and in db
         player.update_other_value(event["event_reward_type"], event["event_reward_value"])
+        #Self explanatory response
         response = {
             "result": True,
             "player": player.__dict__,
             "reward_type": event["event_reward_type"],
             "reward_value": event["event_reward_value"]
         }
+    #Starts if the answer is incorrect
     else:
         response = {
             "result": False,

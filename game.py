@@ -34,10 +34,10 @@ def movePlayer():
     if not player_id or player_id not in GAME_STATE:
         return json.dumps({"Error": "Missing or invalid id"})
     player = GAME_STATE[player_id]["player"]
-    l = request.args.get("location", player.location)
+    location = request.args.get("location", player.location)
     try:
-        target_airport = select_specific_airport(l)
-        player.move_player(target_airport, player.fuel - float(current_distance(player.cordinates, (target_airport['lat'], target_airport['lon']))))
+        target_airport = select_specific_airport(location)
+        player.move_player(target_airport, current_distance(player.cordinates, (target_airport['lat'], target_airport['lon'])))
         response = {
             "player": player.__dict__,
             "target_airport": target_airport

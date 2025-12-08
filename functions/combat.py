@@ -1,6 +1,6 @@
 import json
 
-from classes.db_classes.enemy_queries import select_specific_creature
+from classes.db_classes.enemy_queries import select_specific_creature, update_creature_captured_status
 from classes.db_classes.player_queries import select_specific_player
 
 from classes.entity_classes.player import Player
@@ -42,7 +42,8 @@ def capture(player,enemy):
 
     if enemy.hp<=0:
 
-        return True
+        captured = update_creature_captured_status(enemy.id, True)
+        return captured
 
 
     else:
@@ -62,7 +63,8 @@ def capture(player,enemy):
        if random_value<=capture_chance:
 
           #capture sucess
-          return True
+          captured = update_creature_captured_status(enemy.id, True)
+          return captured
 
     #idea on että tän booli mukaan päätetään napataanko hirviön
        else:

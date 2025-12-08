@@ -8,20 +8,20 @@ from flask import Flask, request, json
 
 app = Flask(__name__)
 
+GAME_STATE = {}
+
 @app.route("/mh_game/startGame")
 def startGame():
     player_name = request.args.get("name", "Anonymous")
-    round = 1
     monster_amount = 3
-    global player
     player = Player(player_name ,select_random_airport_location())
-    global enemies
-    enemies = []
-    for x in range(monster_amount):
-        enemy = Enemy(select_random_airport_location(), player.id)
-        enemy.print_data()
-        enemies.append(enemy)
-    return json.dumps(player.__dict__)
+    enemies = [Enemy(select_random_airport_location(), player.id) for i in range(monster_amount)]
+    GAME_STATE[player.id] =  {
+        "player": player,
+        "enemies": enemies,
+        "round": 1
+    }
+    return json.dumps({"player_id": player.id,"player": player.__dict__})
 
 @app.route("/mh_game/selectAllAirports")
 def selectAllAirports():
@@ -30,7 +30,10 @@ def selectAllAirports():
 
 @app.route("/mh_game/movePlayer")
 def movePlayer():
-    global player
+    player_id = request.args.get("id")
+    if not player_id or player_id not in GAME_STATE:
+        return json.dumps({"Error": "Missing or invalid id"})
+    player = GAME_STATE[player_id]["player"]
     l = request.args.get("location", player.location)
     try:
         target_airport = select_specific_airport(l)
@@ -49,9 +52,11 @@ def movePlayer():
 
 @app.route("/mh_game/moveEnemies")
 def moveEnemies():
-    global enemies
+    player_id = request.args.get("id")
+    if not player_id or player_id not in GAME_STATE:
+        return json.dumps({"Error": "Missing or invalid id"})
     decision_list = []
-    for x in enemies:
+    for x in GAME_STATE[player_id]["enemies"]:
         try:
             decision = x.move_decision()
             #Starts a close move
@@ -59,6 +64,7 @@ def moveEnemies():
                 target = select_closest_airports(10, x.cordinates)[random.randint(0, 9)]
                 x.move_enemy(target)
                 response = {
+                    "Enemy": x.id,
                     "Decision": "Close move",
                     "Target": target["airport_icao"]
                 }
@@ -68,7 +74,7 @@ def moveEnemies():
                 #
                 airport_found = False
                 attempts = 0
-                while not airport_found  and attempts < 500:
+                while not airport_found and attempts < 500:
                     rand_airport = select_random_airport_location()
                     dist = float(current_distance(x.cordinates, (rand_airport['lat'], rand_airport['lon'])))
                     if 500.00<dist<2000.00:
@@ -78,6 +84,7 @@ def moveEnemies():
                 if not airport_found:
                     raise Exception("No valid airport found for far move")
                 response = {
+                    "Enemy": x.id,
                     "Decision": "Far move",
                     "Target": rand_airport["airport_icao"]
                 }
@@ -85,6 +92,7 @@ def moveEnemies():
             #No movement
             else:
                 response = {
+                    "Enemy": x.id,
                     "Decision": "No move",
                     "Target": "No target"
                 }
@@ -94,6 +102,7 @@ def moveEnemies():
             #Should work as an error log
             print("ERROR while moving enemy:", e)
             response = {
+                "Enemy": x.id,
                 "Decision": "Error",
                 "Error": str(e)
             }

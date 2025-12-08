@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="add00fc7-8ac9-4f68-a3a1-81e7f46a4c03" name="Changes" comment="Keskeneräinen placeholder syystemi. Paljon todennäköisesti muutettavaa" />
+    <list default="true" id="add00fc7-8ac9-4f68-a3a1-81e7f46a4c03" name="Changes" comment="Hieman uudempi versio muutamilla korjauksilla">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/combat.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/combat.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,11 +64,13 @@
   "keyToString": {
     "DefaultHtmlFileTemplate": "HTML File",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.combat.executor": "Run",
     "Python.enemy_queries.executor": "Run",
     "Python.game.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -239,6 +244,8 @@
       <workItem from="1764947921470" duration="5301000" />
       <workItem from="1765049905272" duration="2684000" />
       <workItem from="1765116374787" duration="4593000" />
+      <workItem from="1765135325430" duration="728000" />
+      <workItem from="1765208517802" duration="1033000" />
     </task>
     <task id="LOCAL-00001" summary="Jesse branch babyyy">
       <option name="closed" value="true" />
@@ -272,18 +279,39 @@
       <option name="project" value="LOCAL" />
       <updated>1765116725005</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Hieman uudempi versio muutamilla korjauksilla">
+      <option name="closed" value="true" />
+      <created>1765135358531</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1765135358531</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Jesse branch babyyy" />
     <MESSAGE value="Keskeneräinen placeholder syystemi. Paljon todennäköisesti muutettavaa" />
-    <option name="LAST_COMMIT_MESSAGE" value="Keskeneräinen placeholder syystemi. Paljon todennäköisesti muutettavaa" />
+    <MESSAGE value="Hieman uudempi versio muutamilla korjauksilla" />
+    <option name="LAST_COMMIT_MESSAGE" value="Hieman uudempi versio muutamilla korjauksilla" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ohj_2_proj$combat.coverage" NAME="combat Coverage Results" MODIFIED="1765208848714" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions" />
     <SUITE FILE_PATH="coverage/ohj_2_proj$game.coverage" NAME="game Coverage Results" MODIFIED="1764840091203" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ohj_2_proj$enemy_queries.coverage" NAME="enemy_queries Coverage Results" MODIFIED="1764677191512" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/classes/db_classes" />
   </component>

@@ -11,7 +11,7 @@ import random
 #
 app = Flask(__name__)
 
-@app.route("/combat")
+@app.route("/mh_game/combat")
 def combat_start(player,enemy):
   if (player.location ==enemy.location ):
    ## pitäisi ladata tai siirtää taistelu
@@ -21,7 +21,7 @@ def combat_start(player,enemy):
 
     return
 
-
+@app.route("/mh_game/attack")
 def attack(player,enemy):
     monster_health = enemy.update_health(player.dmg)
 
@@ -30,13 +30,14 @@ def attack(player,enemy):
 
 
     return json.dumps(monster_health)
-
+@app.route("/mh_game/monsterAttack")
 def monster_attack(player,enemy):
     player_health = player.update_health(enemy.dmg)
 
 
     return json.dumps(player_health)
 
+@app.route("/mh_game/capture")
 def capture(player,enemy):
 
     if enemy.hp<=0:
@@ -70,7 +71,7 @@ def capture(player,enemy):
           return False
 
 
-
+@app.route("/mh_game/items")
 def items(player):
 
     if player.equiped_list[0]==0:
@@ -90,7 +91,7 @@ def items(player):
 
 
 
-
+@app.route("/mh_game/run")
 def run(player,enemy):
     running_away_chance = player.hp/1.2 - enemy.hp/1.5
     random_value_two = random.randint(1,100)
@@ -108,4 +109,4 @@ def run(player,enemy):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_reloader = True, host='127.0.0.1', port=3000)

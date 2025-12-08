@@ -13,13 +13,21 @@ app = Flask(__name__)
 
 @app.route("/mh_game/combat")
 def combat_start(player,enemy):
-  if (player.location ==enemy.location ):
-   ## pitäisi ladata tai siirtää taistelu
-   #combat sivulle ja jotenkin enablata combat ui html elementti
+
+  p_stats = select_specific_player(player)
+  e_stats = select_specific_creature(enemy)
+
+  if p_stats["location"]==e_stats["location"] :
+      response = {
+          "player_stats": p_stats,
+          "enemy_stats": e_stats
+      }
 
 
+      return json.dumps(response)
 
-    return
+  else:
+        return False
 
 @app.route("/mh_game/attack")
 def attack(player,enemy):

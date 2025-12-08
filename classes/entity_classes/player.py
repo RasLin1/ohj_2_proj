@@ -1,5 +1,6 @@
 from .entities import Entity
 from ..db_classes.player_queries import create_player, move_player, update_player_health, update_player_value
+from ..db_classes.item_queries import assign_item
 
 
 class Player(Entity):
@@ -11,7 +12,7 @@ class Player(Entity):
         self.max_hp = 100
         self.hp = 100
         self.dmg = 10
-        self.equiped_list = []
+        self.equipped_list = []
         self.inventory_list=[]
 
     
@@ -32,6 +33,29 @@ class Player(Entity):
             else:
                 return False
             return True
+        
+    def update_items(self, item):
+        db_success = assign_item(self.id, item["item_id"])
+        if db_success:
+            self.inventory_list.append(item)
+            return True
+        else:
+            return False
+        
+    def equip_item(self, item):
+        if item not in self.inventory_list:
+            return False
+        self.equipped_list.append(item)
+        return True
+    
+    def destroy_item(self, item):
+        if item not in self.inventory_list or item not in self.equipped_list:
+            return False
+        if item in self.inventory_list:
+            self.inventory_list.remove(item)
+        if item in self.equipped_list:
+            self.equipped_list.remove(item)
+
     
     def update_health(self, dmg):
         self.hp = self.hp - dmg

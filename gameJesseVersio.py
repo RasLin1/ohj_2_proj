@@ -166,7 +166,7 @@ def checkEventAnswer():
 
 @app.route("/mh_game/combat/<player>/<enemy>")
 def combat_start(player,enemy):
-
+ #tämän pitäisi runnata kerran move phasen loputtua.
   p_stats = select_specific_player(player)
   e_stats = select_specific_creature(enemy)
   print("p_stats",p_stats)
@@ -181,9 +181,9 @@ def combat_start(player,enemy):
       return json.dumps(response)
 
   else:
-        return {"Seppo":"Testi"}
+        return {"Testi":"False"}
 
-@app.route("/mh_game/attack")
+@app.route("/mh_game/attack/<player>/<enemy>")
 def attack(player,enemy):
     monster_health = enemy.update_health(player.dmg)
 
@@ -192,15 +192,15 @@ def attack(player,enemy):
 
 
     return json.dumps(monster_health)
-@app.route("/mh_game/monsterAttack")
+@app.route("/mh_game/monsterAttack/<player>/<enemy>")
 def monster_attack(player,enemy):
     player_health = player.update_health(enemy.dmg)
 
 
     return json.dumps(player_health)
 
-@app.route("/mh_game/capture")
-def capture(player,enemy):
+@app.route("/mh_game/capture/<enemy>")
+def capture(enemy):
 
     if enemy.hp<=0:
 
@@ -233,7 +233,7 @@ def capture(player,enemy):
           return False
 
 
-@app.route("/mh_game/items")
+@app.route("/mh_game/items/<player>")
 def items(player):
 
     if player.equiped_list[0]==0:
@@ -253,15 +253,15 @@ def items(player):
 
 
 
-@app.route("/mh_game/run")
+@app.route("/mh_game/run/<player>/<enemy>")
 def run(player,enemy):
     running_away_chance = player.hp/1.2 - enemy.hp/1.5
     random_value_two = random.randint(1,100)
     if random_value_two<=running_away_chance:
 
-        return True
+        return {"outcome" :"True"}
     else:
-        return False
+        return {"outcome":"False"}
 
 
 

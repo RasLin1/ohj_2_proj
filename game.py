@@ -5,8 +5,10 @@ from classes.db_classes.event_queries import select_random_event, select_specifi
 from functions.game_functions import probe_interaction, select_closest_airports, current_distance
 import random
 from flask import Flask, request, json
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 GAME_STATE = {}
 
@@ -30,24 +32,48 @@ def selectAllAirports():
 
 @app.route("/mh_game/movePlayer")
 def movePlayer():
+    #Validates player id
     player_id = request.args.get("pid")
-    if not player_id or player_id not in GAME_STATE:
-        return json.dumps({"Error": "Missing or invalid id"})
-    player = GAME_STATE[player_id]["player"]
-    location = request.args.get("location", player.location)
     try:
-        target_airport = select_specific_airport(location)
-        player.move_player(target_airport, current_distance(player.cordinates, (target_airport['lat'], target_airport['lon'])))
-        response = {
-            "player": player.__dict__,
-            "target_airport": target_airport
-        }
-    except TypeError:
-        target_airport = select_specific_airport(player.location)
-        response = {
-            "player": player.__dict__,
-            "target_airport": target_airport
-        }
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
+
+    if player_id not in GAME_STATE:
+        return json.dumps({"Error": "Missing or invalid id"})
+
+    player = GAME_STATE[player_id]["player"]
+
+    #Validates airport
+    location = request.args.get("location", player.location)
+    target_airport = select_specific_airport(location)
+
+    if not target_airport:
+        return json.dumps({"Error": "Invalid airport code"})
+
+    #Calculates distance and moves
+    try:
+        dist = current_distance(
+            player.cordinates,
+            (target_airport["lat"], target_airport["lon"])
+        )
+
+        moved = player.move_player(target_airport, dist)
+
+        if not moved:
+            return json.dumps({"Error": "Movement failed (DB?)"})
+
+    except Exception as e:
+        print("MovePlayer ERROR:", e)
+        return json.dumps({"Error": "Move processing error"})
+
+    #Response if successful and updates round
+    GAME_STATE[player_id]["round"] += 1
+    response = {
+        "player": player.__dict__,
+        "target_airport": target_airport
+    }
+
     return json.dumps(response)
 
 @app.route("/mh_game/moveEnemies")
@@ -145,7 +171,7 @@ def checkEventAnswer():
         #Gets the player
         player = GAME_STATE[player_id]["player"]
         #Updates the appropriate value for object and in db
-        player.update_other_value(event["event_reward_type"], event["event_reward_value"])
+        player.update_other_value(event["event_reward_type"], event["event_reward_value"], True)
         #Self explanatory response
         response = {
             "result": True,

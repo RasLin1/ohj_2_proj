@@ -23,6 +23,8 @@ class Player(Entity):
         if airport == False:
             return False
         else:
+            distance = float(distance)
+            self.fuel = float(self.fuel)
             fuel_consumed = self.fuel - distance/100
             move = move_player(self.id, airport['airport_icao'], fuel_consumed)
             if move:
@@ -31,6 +33,7 @@ class Player(Entity):
                 self.location_name = airport['a_name']
                 self.cordinates = (airport['lat'], airport['lon'])
             else:
+                print(f"Failed DB update for player {self.id} to {airport['airport_icao']}")
                 return False
             return True
         
@@ -57,20 +60,29 @@ class Player(Entity):
             self.equipped_list.remove(item)
 
     
-    def update_health(self, dmg):
-        self.hp = self.hp - dmg
-        change = update_player_health(self.id, dmg)
+    def update_health(self, change, positive):
+        if positive:
+            self.hp = self.hp + change
+        else:
+            self.hp = self.hp - change
+        change = update_player_health(self.id, change)
         if change:
             return True
         else:
             return False
         
-    def update_other_value(self, val, type):
+    def update_other_value(self, val, type, positive):
         if type == "fuel":
-            self.fuel = self.fuel - val
+            if positive:
+                self.fuel = self.fuel + val
+            else:
+                self.fuel = self.fuel - val
             change = update_player_value(type, self.fuel, self.id)
         elif type == "money":
-            self.money = self.money - val
+            if positive:
+                self.money = self.money + val
+            else:
+                self.money = self.money - val
             change = update_player_value(type, self.fuel, self.id)
         if change:
             return True

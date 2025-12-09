@@ -58,13 +58,16 @@ def move_player(id, new_location, current_fuel):
         cursor.close()
         db.close()
     
-def update_player_health(id, health_change):
+def update_player_health(id, health_change, positive):
     db = db_connection()
     update_player_hp_query = f"SELECT current_health FROM player WHERE player_id = %s"
     cursor = db.cursor(dictionary=True)
     cursor.execute(update_player_hp_query, (id, ))
     query_return = cursor.fetchone()
-    new_health = query_return["current_health"] + (health_change)
+    if positive:
+        new_health = query_return["current_health"] + (health_change)
+    else:
+        new_health = query_return["current_health"] - (health_change)
     update_player_query = f"UPDATE player SET current_health = %s WHERE player_id = %s"
     try: 
         cursor = db.cursor(dictionary=True)

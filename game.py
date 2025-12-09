@@ -32,7 +32,7 @@ def selectAllAirports():
 
 @app.route("/mh_game/movePlayer")
 def movePlayer():
-    # --- Validate player id ---
+    #Validates player id
     player_id = request.args.get("pid")
     try:
         player_id = int(player_id)
@@ -44,16 +44,15 @@ def movePlayer():
 
     player = GAME_STATE[player_id]["player"]
 
-    # --- Validate target airport ---
+    #Validates airport
     location = request.args.get("location", player.location)
     target_airport = select_specific_airport(location)
 
     if not target_airport:
         return json.dumps({"Error": "Invalid airport code"})
 
-    # --- Calculate distance & move ---
+    #Calculates distance and moves
     try:
-        print("PLAYER COORD TYPE:", type(player.cordinates), player.cordinates)
         dist = current_distance(
             player.cordinates,
             (target_airport["lat"], target_airport["lon"])
@@ -68,7 +67,8 @@ def movePlayer():
         print("MovePlayer ERROR:", e)
         return json.dumps({"Error": "Move processing error"})
 
-    # --- Success ---
+    #Response if successful and updates round
+    GAME_STATE[player_id]["round"] += 1
     response = {
         "player": player.__dict__,
         "target_airport": target_airport
@@ -171,7 +171,7 @@ def checkEventAnswer():
         #Gets the player
         player = GAME_STATE[player_id]["player"]
         #Updates the appropriate value for object and in db
-        player.update_other_value(event["event_reward_type"], event["event_reward_value"])
+        player.update_other_value(event["event_reward_type"], event["event_reward_value"], True)
         #Self explanatory response
         response = {
             "result": True,

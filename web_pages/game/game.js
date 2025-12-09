@@ -9,6 +9,7 @@ const hp = document.getElementById('hp');
 const fuel = document.getElementById('fuel');
 const money = document.getElementById('money');
 const captured = document.getElementById('captured');
+const turns = document.getAnimations('turns');
 const x = document.querySelector('span');
 const gameApiLink = 'http://127.0.0.1:3000/mh_game';
 const map = L.map('map').setView([51.505, -0.09], 13);
@@ -22,12 +23,14 @@ async function startGame() {
   const name = sessionStorage.getItem("player_name");
   const response = await fetch(`${gameApiLink}/startGame?name=${encodeURIComponent(name)}`);
   const gameData = await response.json();
-  hp.textContent = gameData.player.hp
-  fuel.textContent = gameData.player.fuel
-  money.textContent = gameData.player.money
-  map.setView(gameData.player.cordinates, 13)
-  sessionStorage.setItem("player_id", gameData.player_id)
-  console.log("Game started: ", gameData)
+  hp.textContent = gameData.player.hp;
+  fuel.textContent = gameData.player.fuel;
+  money.textContent = gameData.player.money;
+  captured.textContent = 0;
+  turns.textContent = 100;
+  map.setView(gameData.player.cordinates, 13);
+  sessionStorage.setItem("player_id", gameData.player_id);
+  console.log("Game started: ", gameData);
   loadAirports();
 }
 

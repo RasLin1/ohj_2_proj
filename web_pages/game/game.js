@@ -6,9 +6,32 @@ const rest = document.getElementById('rest');
 const fight = document.getElementById('fight');
 const item_list = document.getElementById('item_list');
 const x = document.querySelector('span');
-const gameApiLink = 'http://127.0.0.1:5000/mh_game';
+const gameApiLink = 'http://127.0.0.1:3000/mh_game';
+const map = L.map('map').setView([51.505, -0.09], 13);
 
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
 
+//Loads all airports
+async function loadAirports(){
+  try{
+    const response = await fetch(`${gameApiLink}/selectAllAirports`);
+    const airports = await response.json();
+
+    airports.forEach(ap => {
+      if (!ap.lat || !ap.lon) 
+        return;
+      const marker = L.marker([ap.lat, ap.lon]).addTo(map);
+      marker.bindPopup(`
+        <b>${ap.airport_icao}</b><br>${ap.airport_name}`)
+    });
+  }
+  catch (error) {
+    console.error("Failed to l9oad airports:", error)
+  }
+};
 
 move.addEventListener('click', function() {
   //add movement selection functionality
@@ -34,3 +57,7 @@ fight.addEventListener('click', function() {
     window.location.href = 'battle/battle.html';
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadAirports();
+})

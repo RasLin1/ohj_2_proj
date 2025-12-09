@@ -5,8 +5,10 @@ from classes.db_classes.event_queries import select_random_event, select_specifi
 from functions.game_functions import probe_interaction, select_closest_airports, current_distance
 import random
 from flask import Flask, request, json
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 GAME_STATE = {}
 

@@ -33,12 +33,18 @@ def selectAllAirports():
 @app.route("/mh_game/movePlayer")
 def movePlayer():
     player_id = request.args.get("pid")
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
     if not player_id or player_id not in GAME_STATE:
         return json.dumps({"Error": "Missing or invalid id"})
     player = GAME_STATE[player_id]["player"]
     location = request.args.get("location", player.location)
     try:
+        print("Target airport:", location)
         target_airport = select_specific_airport(location)
+        print("Resolved airport:", target_airport)
         player.move_player(target_airport, current_distance(player.cordinates, (target_airport['lat'], target_airport['lon'])))
         response = {
             "player": player.__dict__,

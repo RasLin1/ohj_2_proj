@@ -5,6 +5,10 @@ const items = document.getElementById('items');
 const rest = document.getElementById('rest');
 const fight = document.getElementById('fight');
 const item_list = document.getElementById('item_list');
+const hp = document.getElementById('hp');
+const fuel = document.getElementById('fuel');
+const money = document.getElementById('money');
+const captured = document.getElementById('captured');
 const x = document.querySelector('span');
 const gameApiLink = 'http://127.0.0.1:3000/mh_game';
 const map = L.map('map').setView([51.505, -0.09], 13);
@@ -18,7 +22,9 @@ async function startGame() {
   const name = sessionStorage.getItem("player_name");
   const response = await fetch(`${gameApiLink}/startGame?name=${encodeURIComponent(name)}`);
   const gameData = await response.json();
-  
+  hp.textContent = gameData.player.hp
+  fuel.textContent = gameData.player.fuel
+  money.textContent = gameData.player.money
   map.setView(gameData.player.cordinates, 13)
   sessionStorage.setItem("player_id", gameData.player_id)
   console.log("Game started: ", gameData)
@@ -36,16 +42,31 @@ async function loadAirports(){
         return;
       const marker = L.marker([ap.lat, ap.lon]).addTo(map);
       marker.bindPopup(`
-        <b>${ap.airport_icao}</b><br>${ap.a_name}`)
+        <b>${ap.airport_icao}</b><br>${ap.a_name}<br><button class="move-btn" data-icao="${ap.airport_icao}">Move</button>`
+      );
     });
   }
   catch (error) {
-    console.error("Failed to load airports:", error)
+    console.error("Failed to load airports:", error);
   }
 };
 
-move.addEventListener('click', function() {
+async function movePlayer(icao) {
+  const id = sessionStorage.getItem('player_id');
+  const response = await fetch(`${gameApiLink}/movePlayer?pid=${id}&location=${icao}`);
+  const result = await response.json();
+  console.log("Player moved: ", result);
+  const cords = result.player.cordinates
+  map.setView(cords, 13);
+}
+
+document.addEventListener('click', function(event) {
   //add movement selection functionality
+  if (event.target.classList.contains("move-btn")) {
+    const icao = event.target.dataset.icao;
+    console.log("Moving to: ", icao)
+    movePlayer(icao)
+  }
 });
 
 items.addEventListener('click', function() {

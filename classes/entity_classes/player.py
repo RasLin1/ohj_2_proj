@@ -31,6 +31,7 @@ class Player(Entity):
                 self.location_name = airport['a_name']
                 self.cordinates = (airport['lat'], airport['lon'])
             else:
+                print("Error moving player in class")
                 return False
             return True
         

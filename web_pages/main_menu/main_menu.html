@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Menu</title>
+
+    <script src="main_menu.js" defer></script>
+    <link href="main_menu.css" rel="stylesheet">
+</head>
+<body>
+    <section id="select_screen">
+        <button type="button" id="new_game">New Game</button>
+        <button type="button" id="highscores">Highscores</button>
+    </section>
+</body>
+<dialog id="name_input">
+    <span>&#x2715;</span>
+    <input
+        type="text"
+        id="player_name"
+        placeholder="Player Name"
+        value=""
+        minlength="1"
+        maxlength="12"/>
+    <input id="name_submit" type="submit" value="Submit Player Name">
+</dialog>
+</html>

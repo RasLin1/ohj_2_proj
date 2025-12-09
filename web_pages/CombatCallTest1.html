@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Combat API Test</title>
+</head>
+<body>
+  <h2>⚔️ CombatCallTest</h2>
+  <p>Tämä testaa Flask-pelin backend-kutsut.</p>
+
+  <button id="combat">Test Combat</button>
+  <button id="attack">Attack</button>
+  <button id="monsterAttack">Monster Attack</button>
+  <button id="run">Run</button>
+  <pre id="output"></pre>
+
+  <script>
+    const output = document.getElementById("output");
+
+    // ✅ Aseta nämä ID:t testiin (voit muuttaa)
+    const playerId = 1;
+    const enemyId = 2;
+    const baseURL = "http://127.0.0.1:3000/mh_game";
+
+    // Näyttää vastauksen ruudulle
+    function log(msg) {
+      console.log(msg);
+      output.textContent += JSON.stringify(msg, null, 2) + "\n";
+    }
+
+    // Combat
+    document.getElementById("combat").addEventListener("click", () => {
+      fetch(`${baseURL}/combat/${playerId}/${enemyId}`)
+        .then(r => r.json())
+        .then(data => log(data))
+        .catch(e => log(e));
+    });
+
+    // Player attacks monster
+    document.getElementById("attack").addEventListener("click", () => {
+      fetch(`${baseURL}/attack/${playerId}/${enemyId}`)
+        .then(r => r.json())
+        .then(data => log(data))
+        .catch(e => log(e));
+    });
+
+    // Monster attacks player
+    document.getElementById("monsterAttack").addEventListener("click", () => {
+      fetch(`${baseURL}/monsterAttack/${playerId}/${enemyId}`)
+        .then(r => r.json())
+        .then(data => log(data))
+        .catch(e => log(e));
+    });
+
+    // Player runs
+    document.getElementById("run").addEventListener("click", () => {
+      fetch(`${baseURL}/run/${playerId}/${enemyId}`)
+        .then(r => r.json())
+        .then(data => log(data))
+        .catch(e => log(e));
+    });
+  </script>
+</body>
+</html>

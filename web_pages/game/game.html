@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Legally Distinct Monster Game</title>
+    <script src="game.js" defer></script>
+    <link href="game.css" rel="stylesheet">
+</head>
+<body>
+<section id="actions">
+    <button type="button" id="move">Move</button>
+    <button type="button" id="items">Items</button>
+    <button type="button" id="rest">Rest</button>
+    <button type="button" id="fight">Fight</button>
+</section>
+<div id="map">
+    <p>PLACE HOLDER AREA FOR MAP</p>
+</div>
+<div id="stats_log">
+    <h3>Stats</h3>
+    <button type="button" id="quit">&#x2715;</button>
+    <section id="stats">
+        <ul>
+            <li>HP:</li>
+            <li>Fuel:</li>
+            <li>Money:</li>
+            <li>Captured:</li>
+            <li>Turns remaining:</li>
+        </ul>
+        <ul>
+            <li id="hp">N/A</li>
+            <li id="fuel">N/A</li>
+            <li id="money">N/A</li>
+            <li id="captured">N/A</li>
+            <li id="turns">N/A</li>
+        </ul>
+    </section>
+    <section id="game_text">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque debitis, dicta distinctio doloremque expedita
+            fuga fugiat id magnam magni nemo nobis, omnis optio, quo ratione repudiandae sint suscipit tenetur
+            vitae.</p>
+    </section>
+</div>
+
+</body>
+<dialog id="item_list">
+    <span id="main_gameX">&#x2715;</span>
+    <ul>
+
+    </ul>
+</dialog>
+
+<div id="battle_screen">
+    <dialog id="battle">
+        <button type="button" id="quit_battle">&#x2715;</button>
+        <section id="monster_hp">
+            <p id="monster_name">Monster Name</p>
+            <p id="monster_hp_percentage">HP: X%</p>
+        </section>
+        <section id="player_hp">
+            <p id="player_name">Player Name</p>
+            <p id="player_hp_percentage">HP: X%</p>
+        </section>
+        <section id="turn_options">
+            <button type="button" id="attack">Attack</button>
+            <button type="button" id="item_battle">Item</button>
+            <button type="button" id="capture">Capture</button>
+            <button type="button" id="run">Run</button>
+        </section>
+    </dialog>
+    <div id="battle_item_box">
+        <dialog id="item_list_battle">
+            <span id="in_battleX">&#x2715;</span>
+            <ul>
+            </ul>
+        </dialog>
+    </div>
+</div>
+</html>

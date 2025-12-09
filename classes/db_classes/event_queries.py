@@ -20,10 +20,29 @@ def select_random_event():
             return query_return
         else:
             print("Tapahtumaa ei löytynyt")
-            return []
+            return False
     except mysql.connector.Error as err:
         print(f"Virhe: {err}")
-        return []
+        return False
+    finally:
+        cursor.close()
+        db.close()
+
+def select_specific_event(id):
+    db = db_connection()
+    specific_event_query = f"SELECT * FROM events WHERE event_id = %s LIMIT 1 OFFSET "
+    try: 
+        cursor = db.cursor(dictionary=True)
+        cursor.execute(specific_event_query, (id,))
+        query_return = cursor.fetchone()
+        if query_return:
+            return query_return
+        else:
+            print("Tapahtumaa ei löytynyt")
+            return False
+    except mysql.connector.Error as err:
+        print(f"Virhe: {err}")
+        return False
     finally:
         cursor.close()
         db.close()

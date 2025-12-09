@@ -5,8 +5,13 @@ from classes.db_classes.event_queries import select_random_event, select_specifi
 from functions.game_functions import probe_interaction, select_closest_airports, current_distance
 import random
 from flask import Flask, request, json
+<<<<<<< HEAD:game.py
 from flask_cors import CORS
 
+=======
+from classes.db_classes.enemy_queries import select_specific_creature, update_creature_captured_status
+from classes.db_classes.player_queries import select_specific_player
+>>>>>>> jesse:gameJesseVersio.py
 app = Flask(__name__)
 CORS(app)
 
@@ -186,6 +191,132 @@ def checkEventAnswer():
             "correct_answer": event["event_answer"]
         }
     return json.dumps(response)
+
+
+
+@app.route("/mh_game/combat/<player>/<enemy>")
+def combat_start(player,enemy):
+ #tämän pitäisi runnata kerran move phasen loputtua.
+  p_stats = select_specific_player(player)
+  e_stats = select_specific_creature(enemy)
+  print("p_stats",p_stats)
+  print("e_stats", e_stats,enemy)
+  if p_stats["player_location"]==e_stats["location"] :
+      response = {
+          "player_stats": p_stats,
+          "enemy_stats": e_stats
+      }
+
+
+      return json.dumps(response)
+
+  else:
+        return {"Testi":"False"}
+
+@app.route("/mh_game/attack/<player>/<enemy>")
+def attack(player,enemy):
+    monster_health = enemy.update_health(player.dmg)
+
+
+
+
+
+    return json.dumps(monster_health)
+@app.route("/mh_game/monsterAttack/<player>/<enemy>")
+def monster_attack(player,enemy):
+    player_health = player.update_health(enemy.dmg)
+
+
+    return json.dumps(player_health)
+
+@app.route("/mh_game/capture/<enemy>")
+def capture(enemy):
+
+    if enemy.hp<=0:
+
+        captured = update_creature_captured_status(enemy.id, True)
+        return captured
+
+
+    else:
+
+       capture_chance = 60-(enemy.hp+2
+
+
+
+
+
+
+
+
+                         )/2
+       random_value = random.randint(1,100)
+
+       if random_value<=capture_chance:
+
+          #capture sucess
+          captured = update_creature_captured_status(enemy.id, True)
+          return captured
+
+    #idea on että tän booli mukaan päätetään napataanko hirviön
+       else:
+          return False
+
+
+@app.route("/mh_game/items/<player>")
+def items(player):
+
+    if player.equiped_list[0]==0:
+        player.equiped_list.append(player.inventory_list[0])
+        player.dmg = player.dmg + player.equiped_list[0].dmg
+        return json.dumps(player.dmg)
+
+
+    else:
+        player.dmg -= player.equiped_list[0].dmg
+        player.equiped_list.insert(0,player.inventory_list[0])
+        player.dmg += player.equiped_list[0].dmg
+
+        return json.dumps(player.dmg)
+
+
+
+
+
+@app.route("/mh_game/run/<player>/<enemy>")
+def run(player,enemy):
+    running_away_chance = player.hp/1.2 - enemy.hp/1.5
+    random_value_two = random.randint(1,100)
+    if random_value_two<=running_away_chance:
+
+        return {"outcome" :"True"}
+    else:
+        return {"outcome":"False"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 """

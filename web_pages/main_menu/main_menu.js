@@ -18,10 +18,12 @@ name_submit.addEventListener('click', function() {
   const player_name = document.getElementById('player_name').value;
   //add so it grabs and assigns the given player as the value over to python
   let start = confirm(`Start a new game as ${player_name}?`);
-  //localStorage.setItem('game_id', 1234)
   if (start === false) {
     name_input.close();
   } else {
+    //Stores name in a sessionStorage item so it can be read in game.html
+    sessionStorage.setItem('player_name', player_name)
+    //Redirection to the game
     window.location.href = '../game/game.html';
   }
 });

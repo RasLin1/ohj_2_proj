@@ -46,7 +46,7 @@ def select_random_creature():
 #Hakee hirviön käyttäen id arvoa"
 def select_specific_creature(id):
     db = db_connection()
-    specific_creature_query = f"SELECT game_creatures.id AS id, game_creatures.creature_current_health AS health, game_creatures.creature_captured AS status, creature.creature_damage AS damage, creature.creature_name AS name FROM game_creatures INNER JOIN creature ON game_creatures.creature_id = creature.creature_id WHERE game_creatures.id = %s LIMIT 1"
+    specific_creature_query = f"SELECT game_creatures.id AS id, game_creatures.creature_current_health AS health, game_creatures.creature_captured AS status, creature.creature_damage AS damage, creature.creature_name AS name, creature_location AS location FROM game_creatures INNER JOIN creature ON game_creatures.creature_id = creature.creature_id WHERE game_creatures.id = %s LIMIT 1"
     try: 
         cursor = db.cursor(dictionary=True)
         cursor.execute(specific_creature_query, (id, ))
@@ -125,3 +125,11 @@ def update_creature_captured_status(id, status_change):
     finally:
         cursor.close()
         db.close()
+
+
+
+
+
+
+
+

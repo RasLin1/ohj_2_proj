@@ -23,6 +23,8 @@ class Player(Entity):
         if airport == False:
             return False
         else:
+            distance = float(distance)
+            self.fuel = float(self.fuel)
             fuel_consumed = self.fuel - distance/100
             move = move_player(self.id, airport['airport_icao'], fuel_consumed)
             if move:
@@ -31,7 +33,7 @@ class Player(Entity):
                 self.location_name = airport['a_name']
                 self.cordinates = (airport['lat'], airport['lon'])
             else:
-                print("Error moving player in class")
+                print(f"Failed DB update for player {self.id} to {airport['airport_icao']}")
                 return False
             return True
         

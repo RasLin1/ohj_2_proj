@@ -32,30 +32,48 @@ def selectAllAirports():
 
 @app.route("/mh_game/movePlayer")
 def movePlayer():
+    # --- Validate player id ---
     player_id = request.args.get("pid")
     try:
         player_id = int(player_id)
     except (TypeError, ValueError):
         return json.dumps({"Error": "Missing or invalid id"})
-    if not player_id or player_id not in GAME_STATE:
+
+    if player_id not in GAME_STATE:
         return json.dumps({"Error": "Missing or invalid id"})
+
     player = GAME_STATE[player_id]["player"]
+
+    # --- Validate target airport ---
     location = request.args.get("location", player.location)
+    target_airport = select_specific_airport(location)
+
+    if not target_airport:
+        return json.dumps({"Error": "Invalid airport code"})
+
+    # --- Calculate distance & move ---
     try:
-        print("Target airport:", location)
-        target_airport = select_specific_airport(location)
-        print("Resolved airport:", target_airport)
-        player.move_player(target_airport, current_distance(player.cordinates, (target_airport['lat'], target_airport['lon'])))
-        response = {
-            "player": player.__dict__,
-            "target_airport": target_airport
-        }
-    except TypeError:
-        target_airport = select_specific_airport(player.location)
-        response = {
-            "player": player.__dict__,
-            "target_airport": target_airport
-        }
+        print("PLAYER COORD TYPE:", type(player.cordinates), player.cordinates)
+        dist = current_distance(
+            player.cordinates,
+            (target_airport["lat"], target_airport["lon"])
+        )
+
+        moved = player.move_player(target_airport, dist)
+
+        if not moved:
+            return json.dumps({"Error": "Movement failed (DB?)"})
+
+    except Exception as e:
+        print("MovePlayer ERROR:", e)
+        return json.dumps({"Error": "Move processing error"})
+
+    # --- Success ---
+    response = {
+        "player": player.__dict__,
+        "target_airport": target_airport
+    }
+
     return json.dumps(response)
 
 @app.route("/mh_game/moveEnemies")

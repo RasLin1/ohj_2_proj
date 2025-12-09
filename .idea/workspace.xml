@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="add00fc7-8ac9-4f68-a3a1-81e7f46a4c03" name="Changes" comment="viimeistely taistelu funktioihin.&#10;Java callit aloittanut">
-      <change afterPath="$PROJECT_DIR$/static/CombatCallTest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/db_classes/enemy_queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/db_classes/enemy_queries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/CombatCallTest.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/CombatCallTest.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/CombatCallTest.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/gameJesseVersio.py" afterDir="false" />
-    </list>
+    <list default="true" id="add00fc7-8ac9-4f68-a3a1-81e7f46a4c03" name="Changes" comment="viimeistely taistelu funktioihin.&#10;Java callit aloittanut" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -252,7 +245,7 @@
       <workItem from="1765116374787" duration="4593000" />
       <workItem from="1765135325430" duration="728000" />
       <workItem from="1765208517802" duration="11287000" />
-      <workItem from="1765268244845" duration="6582000" />
+      <workItem from="1765268244845" duration="6918000" />
     </task>
     <task id="LOCAL-00001" summary="Jesse branch babyyy">
       <option name="closed" value="true" />
@@ -310,7 +303,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765226933971</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="viimeistely taistelu funktioihin.&#10;Java callit aloittanut">
+      <option name="closed" value="true" />
+      <created>1765277060923</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1765277060923</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

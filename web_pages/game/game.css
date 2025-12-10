@@ -79,6 +79,14 @@ ul {
     border: 0.05rem solid white;
 }
 
+#shop_modal {
+    width: 20%;
+    height: 20%;
+    background-color: black;
+    left: 10%;
+    margin: 0;
+}
+
 #item_list {
     width: 20%;
     height: 20%;
@@ -86,6 +94,15 @@ ul {
     top: 25%;
     left: 10%;
     margin: 0;
+}
+
+#shopX {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    font-size: 1rem;
+    text-decoration: none;
+    color: #fff;
 }
 
 #item_list ul {

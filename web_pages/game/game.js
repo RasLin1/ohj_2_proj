@@ -1,6 +1,7 @@
 'use strict';
 
 const shop = document.getElementById('shop');
+const shopX = document.getElementById('shopX')
 const items = document.getElementById('items');
 const rest = document.getElementById('rest');
 const fight = document.getElementById('fight');
@@ -206,6 +207,10 @@ fight.addEventListener('click', function() {
 shop.addEventListener('click', function() {
   document.getElementById('shop_modal').showModal();
 });
+
+shopX.addEventListener('click', function(){
+  document.getElementById('shop_modal').close();
+})
 
 document.getElementById('quit_battle').addEventListener('click', () => {
   document.getElementById('battle').close();

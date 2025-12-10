@@ -6,8 +6,7 @@ from functions.game_functions import probe_interaction, select_closest_airports,
 import random
 from flask import Flask, request, json
 from flask_cors import CORS
-from classes.db_classes.enemy_queries import select_specific_creature, update_creature_captured_status
-from classes.db_classes.player_queries import select_specific_player
+from classes.db_classes.enemy_queries import update_creature_captured_status
 app = Flask(__name__)
 CORS(app)
 
@@ -268,18 +267,19 @@ def allowCombat():
         player_id = int(player_id)
     except (TypeError, ValueError):
         return json.dumps({"Error": "Missing or invalid id"})
+    player = GAME_STATE[player_id]["player"]
     for x in GAME_STATE[player_id]["enemies"]:
         if GAME_STATE[player_id]["player"]["location"] == x["location"]:
             response = {
                 "result": True,
                 "enemy": x.__dict__,
+                "player": player.__dict__
             }
             return json.dumps(response)
     response = {
         "result": False
     }
     return json.dumps(response)
-
 
 
 """

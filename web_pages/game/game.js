@@ -1,6 +1,6 @@
 'use strict';
 
-const move = document.getElementById('move');
+const move = document.getElementById('shop');
 const items = document.getElementById('items');
 const rest = document.getElementById('rest');
 const fight = document.getElementById('fight');
@@ -9,7 +9,8 @@ const hp = document.getElementById('hp');
 const fuel = document.getElementById('fuel');
 const money = document.getElementById('money');
 const captured = document.getElementById('captured');
-const turns = document.getAnimations('turns');
+const turns = document.getElementById('turns');
+const d_list = document.getElementById('distance_list');
 const x = document.querySelector('span');
 const gameApiLink = 'http://127.0.0.1:3000/mh_game';
 const map = L.map('map').setView([51.505, -0.09], 13);
@@ -110,7 +111,7 @@ document.getElementById("submit_event_answer").addEventListener('click', async f
   const answer = document.getElementById("event_answer_input").value;
   console.log("Sending pid:", player_id, "eid:", event_id, "answer:", answer);
   const response = await fetch(`${gameApiLink}/checkEventAnswer?pid=${player_id}&eid=${event_id}&answer=${answer}`);
-  const data = await response.json();
+  const data = await response.json(); 
   console.log("Answer result:", data);
 
   if (data.result === true) {
@@ -129,26 +130,21 @@ document.getElementById("submit_event_answer").addEventListener('click', async f
 async function combatStart(){
   const id = sessionStorage.getItem('player_id');
 
-  try {
-    const response = await fetch(`${apiLink}/allowCombat?pid=${id}`)
-    const data = await response.json()
+  const response = await fetch(`${gameApiLink}/allowCombat?pid=${id}`)
+  const data = await response.json()
 
-    console.log(data)
-    if(!data.result) {
-      console.log("No combat allowed")
-      return
-    }
-
-    sessionStorage.setItem("enemy_id", data.enemy_id)
-    document.getElementById("battle").showModal();
-
-
-  }catch (error){
-
-    console.log(error)
+  console.log(data)
+  if(!data.result) {
+    console.log("No combat allowed")
+    return
   }
+  console.log(`Combat started: ${data}`)
 
+  sessionStorage.setItem("enemy_id", data.enemy_id);
+  document.getElementById("monster_remaining_hp").innerText = `HP:${data.monster.max_hp}/${data.monster.hp}`
+  document.getElementById("battle").showModal();
 }
+
 
 document.addEventListener('click', async function(event) {
   //add movement selection functionality
@@ -156,9 +152,9 @@ document.addEventListener('click', async function(event) {
     const icao = event.target.dataset.icao;
     console.log("Moving to: ", icao);
     await movePlayer(icao);
+    await combatStart();
     await moveEnemies();
     await checkDistance();
-    await combatStart();
   }
 });
 
@@ -204,179 +200,3 @@ document.addEventListener("DOMContentLoaded", async ()  => {
   startGame();
   checkDistance()
 })
-
-const start = []
-async function CombatStart(){
-
-
-  try {
-    const response = await fetch('http://127.0.0.1:3000/mh_game/combat/114/234')
-    const statsData = await response.json()
-
-    console.log(statsData)
-    if(statsData ==="False") {
-
-      console.log(`Hirviö ei ole samassa paikka eli : ${statsData}`)
-
-
-    }
-
-    else {
-
-      monster_name.innerText = statsData.enemy_stats.name
-      monster_hp.innerText = statsData.enemy_stats.health
-      player_name.innerText = statsData.player_stats.name
-      player_hp.innerText = statsData.player_stats.health
-
-    }
-
-
-  }catch (error){
-
-    console.log(error)
-  }
-
-}
-
-async function Attack(){
-
- const p_id =sessionStorage.getItem("player_id")
-
-  try {
-    //const response = await fetch('http://127.0.0.1:3000/mh_game/attack/active_entities.players[1]/active_entities.active_ennemies[0]')
-    const  response  = await fetch(`${gameApiLink}/attack?pid=${p_id}`)
-    const statsData = await response.json()
-
-    console.log(statsData)
-
-
-    monster_hp.innerText =statsData.enemy.hp
-
-
-
-
-
-  }catch (error){
-
-    console.log(error)
-  }
-
-}
-
-async function MonsterAttack(){
-const p_id= sessionStorage.getItem("player_id")
-
-  try {
-   // const response = await fetch('http://127.0.0.1:3000/mh_game/monsterAttack/114/234')
-    const  response  = await fetch(`${gameApiLink}/monsterAttack?pid=${p_id}`)
-    const statsData = await response.json()
-
-    console.log(statsData)
-
-    player_hp.innerText = statsData.player.hp
-
-
-
-  }catch (error){
-
-    console.log(error)
-  }
-
-}
-
-async function Capture(){
-const  p_id = sessionStorage.getItem("player_id")
-
-  try {
-    //const response = await fetch('http://127.0.0.1:3000/mh_game/capture/114/234')
-    const  response  = await fetch(`${gameApiLink}/capture?pid=${p_id}`)
-    const statsData = await response.json()
-
-    if(statsData.Captured === true) {
-
-      console.log(`${statsData}`)
-
-      document.getElementById('battle').close()
-      alert('Monster succesfully hunted')
-
-    }
-    else {
-    console.log("Monster has not been captured")
-    }
-
-
-
-  }catch (error){
-
-    console.log(error)
-  }
-
-
-
-
-
-}
-
-async function Items(){
-
-
-  try {
-    const response = await fetch('http://127.0.0.1:3000/mh_game/items/114/234')
-    const statsData = await response.json()
-
-    console.log(statsData)
-   // monster_name.innerText= statsData.enemy_stats.name
-    //monster_hp.innerText = statsData.enemy_stats.health
-    //player_name.innerText = statsData.player_stats.name
-    //player_hp.innerText = statsData.player_stats.health
-
-
-
-  }catch (error){
-
-    console.log(error)
-  }
-
-}
-
-
-async function Run(){
-
-
-  try {
-    const response = await fetch('http://127.0.0.1:3000/mh_game/run/114/234')
-    const statsData = await response.json()
-
-    if(statsData==="True"){
-      //poista combat ui
-    monster_name.innerText= '';
-    monster_hp.innerText = '';
-    player_name.innerText = '';
-    player_hp.innerText = '';
-   window.location.href = 'game/game.html';
-
-    }
-    else {
-
-
-
-    }
-
-
-
-  }catch (error){
-
-    console.log(error)
-  }
-
-}
-
-
-
-
-attack()
-
-
-
-
-

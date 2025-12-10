@@ -9,6 +9,7 @@ class Enemy(Entity):
         self.id = c["id"]
         self.dmg = c["damage"]
         self.hp = c["health"]
+        self.max_hp = c["health"]
         self.captured = False
     
     def print_data(self):

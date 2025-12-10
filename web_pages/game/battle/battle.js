@@ -10,6 +10,7 @@ const attack = document.getElementById('attack');
 const item = document.getElementById('item');
 const capture = document.getElementById('capture');
 const runaway = document.getElementById('runaway');
+const apiLink = 'http://127.0.0.1:3000/mh_game';
 
 attack.addEventListener('click', function() {
   //add attack functionality
@@ -19,12 +20,23 @@ item.addEventListener('click', function() {
 
 });
 
+capture.addEventListener('click', function() {
 
-async function CombatStart(){
+});
 
+runaway.addEventListener('click', function() {
+
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  combatStart();
+})
+
+async function combatStart(){
+  const id = sessionStorage.getItem('player_id');
 
   try {
-    const response = await fetch('http://127.0.0.1:3000/mh_game/combat/114/234')
+    const response = await fetch(`${apiLink}/combat/${id}`)
     const statsData = await response.json()
 
     console.log(statsData)

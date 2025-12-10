@@ -99,47 +99,61 @@ span:hover {
     width: 100%;
     background-color: #4a2023;
     height: 100%;
-    background-image: url('placeholderMonster.png'), linear-gradient(black, transparent);
+    background-image: url('html_visual_assets/Head.png'), url('html_visual_assets/Torso.png'), url('html_visual_assets/Tail.png'), url('html_visual_assets/BG.png');
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: 47% -8%, center, 45% 100%, center;
+    background-size: 20%, 35%, 40%, 100%;
+    animation: mymove 3s infinite;
+}
+
+@keyframes mymove {
+    70% {background-position: 47% -10%, center 45%, 44% 100%, center;}
 }
 
 #monster_hp {
     position: absolute;
+    border-radius: 0.5rem;
     top: 2rem;
     left: 10%;
     display: flex;
     flex-wrap: wrap;
-    width: 8%;
+    width: 15%;
     justify-content: space-evenly;
-    background-color: rgba(181, 78, 86, 0.4)
+    background-color: rgb(1, 7, 25, 40%);
+    border: 0.05rem solid rgba(255, 255, 255, 0.40);
 }
 
 #battle p {
     margin: 0.5rem;
     color: white;
+    font-size: 1.5rem;
 }
 
 #player_hp {
     position: absolute;
+    border-radius: 0.5rem;
     bottom: 6rem;
-    right: 10%;
+    right: 9%;
     display: flex;
     flex-wrap: wrap;
-    width: 8%;
+    width: 15%;
     justify-content: space-evenly;
-    background-color: rgba(181, 78, 86, 0.4)
+    background-color: rgb(1, 7, 25, 40%);
+    border: 0.05rem solid rgba(255, 255, 255, 0.40);
 }
 
 #turn_options {
     width: 80%;
-    background-color: rgba(181, 78, 86, 0.4);
+    background-color: rgb(1, 7, 25, 40%);
     display: flex;
     justify-content: space-evenly;
-    margin-left: 10%;
+    margin-left: 8%;
+    border-radius: 1rem;
     position: absolute;
     bottom: 1rem;
     padding: 1rem;
+    border: 0.05rem solid white;
+
 }
 
 #battle button {

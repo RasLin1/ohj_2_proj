@@ -34,7 +34,10 @@ button {
 h3 {
     justify-content: center;
     display: flex;
-    margin: 0.5rem;
+    margin: 1rem;
+    border: 0.05rem solid white;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 #quit {
@@ -48,7 +51,9 @@ h3 {
 #stats {
     display: flex;
     flex-wrap: wrap;
-    padding-left: 3rem;
+    margin: 1rem;
+    padding-left: 2rem;
+    border: 0.05rem solid white;
 }
 
 ul {
@@ -56,9 +61,10 @@ ul {
 }
 
 #game_text {
-    height: 68%;
+    height: 65%;
     margin: 1rem;
     padding: 1rem;
+    border: 0.05rem solid white;
 }
 
 #item_list {

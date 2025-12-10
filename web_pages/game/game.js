@@ -159,6 +159,7 @@ document.addEventListener('click', async function(event) {
     await movePlayer(icao);
     await moveEnemies();
     await checkDistance();
+    await combatStart();
   }
 });
 
@@ -188,7 +189,7 @@ fight.addEventListener('click', function() {
 });
 
 shop.addEventListener('click', function() {
-  document.getElementById("event_modal").showModal();
+  document.getElementById("shop_modal").showModal();
 });
 
 document.getElementById("quit_battle").addEventListener("click", () => {

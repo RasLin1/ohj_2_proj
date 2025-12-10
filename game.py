@@ -280,23 +280,8 @@ def allowCombat():
     }
     return json.dumps(response)
 
-@app.route("/mh_game/combat/<player>/<enemy>")
-def combat_start():
-    #tämän pitäisi runnata kerran move phasen loputtua.
-    player_id = request.args.get("pid")
-    for x in GAME_STATE[player_id]["enemies"]:
-        if GAME_STATE[player_id]["player"]["location"] == x["location"]:
-            response = {
-                "result": True,
-                "enemy": x.__dict__,
-            }
-            return json.dumps(response)
-    response = {
-        "result": False
-    }
-    return json.dumps(response)
 
- 
+
 """
   p_stats = select_specific_player(player)
   e_stats = select_specific_creature(enemy)

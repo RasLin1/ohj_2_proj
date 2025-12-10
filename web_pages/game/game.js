@@ -68,7 +68,7 @@ async function movePlayer(icao) {
 
 async function healPlayer(change) {
   const id = sessionStorage.getItem('player_id');
-    const response = await fetch(`${gameApiLink}/healPlayer?pid=${id}&change=${10}`);
+    const response = await fetch(`${gameApiLink}/healPlayer?pid=${id}&change=${change}`);
     const result = await response.json();
     console.log("Player healed: ", result.player.hp, "Success:", result.result);
     hp.textContent = result.player.hp;
@@ -93,6 +93,38 @@ async function checkDistance() {
     d_list.append(li)
   }
 }
+
+async function getEvent() {
+  const response = await fetch(`${gameApiLink}/getRandomEvent`);
+  const data = await response.json();
+  console.log("Event data:", data);
+  sessionStorage.setItem("current_event_id", data.event_id);
+  document.getElementById("event_description").innerText = data.description;
+  document.getElementById("event_answer_input").value = "";
+  document.getElementById("event_result").innerText = "";
+  document.getElementById("event_modal").showModal();
+}
+
+document.getElementById("submit_event_answer").addEventListener('click', async function(event) {
+  const event_id = sessionStorage.getItem("current_event_id");
+  const player_id = sessionStorage.getItem("player_id");
+  const answer = document.getElementById("event_answer_input").value;
+  const response = await fetch(`${gameApiLink}/checkEventAnswer?pid=${player_id}&eid=${event_id}&answer=${answer}`);
+  const data = await response.json(); 
+  console.log("Answer result:", data);
+
+  if (data.result === true) {
+      document.getElementById("event_result").innerText = `Correct | Reward was: ${data.reward_value} ${data.reward_type}`;
+      if (data.reward_type == "fuel"){
+        fuel.textContent = data.player.fuel;
+      }
+      else if (data.reward_type == "money"){
+        hp.textContent = data.player.hp;
+      }
+  } else {
+      document.getElementById("event_result").innerText = `Incorrect | Answer was: ${data.correct_answer}`;
+  }
+});
 
 async function combatStart(){
   const id = sessionStorage.getItem('player_id');
@@ -122,10 +154,10 @@ document.addEventListener('click', async function(event) {
   //add movement selection functionality
   if (event.target.classList.contains("move-btn")) {
     const icao = event.target.dataset.icao;
-    console.log("Moving to: ", icao)
-    await movePlayer(icao)
-    await moveEnemies()
-    await checkDistance()
+    console.log("Moving to: ", icao);
+    await movePlayer(icao);
+    await moveEnemies();
+    await checkDistance();
   }
 });
 
@@ -141,11 +173,8 @@ rest.addEventListener('click', async function() {
   //add rest selection functionality
   let rest_a_turn = confirm('Are you sure you want to rest?');
   if (rest_a_turn) {
-    await healPlayer(15)
-
-    turns.textContent = result.turns;
-    fuel.textContent = result.player.fuel;
-    const cords = result.player.c
+    await healPlayer(15);
+    await getEvent();
   }
 });
 
@@ -155,6 +184,10 @@ fight.addEventListener('click', function() {
   if (start_fight === true) {
     window.location.href = 'battle/battle.html';
   }
+});
+
+document.getElementById("close_event_modal").addEventListener("click", () => {
+  document.getElementById("event_modal").close();
 });
 
 document.addEventListener("DOMContentLoaded", async ()  => {

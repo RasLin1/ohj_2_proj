@@ -25,10 +25,10 @@ class Player(Entity):
         else:
             distance = float(distance)
             self.fuel = float(self.fuel)
-            fuel_consumed = self.fuel - distance/100
-            move = move_player(self.id, airport['airport_icao'], fuel_consumed)
+            new_fuel = self.fuel - distance/100
+            move = move_player(self.id, airport['airport_icao'], new_fuel)
             if move:
-                self.fuel = fuel_consumed
+                self.fuel = new_fuel
                 self.location = airport['airport_icao']
                 self.location_name = airport['a_name']
                 self.cordinates = (airport['lat'], airport['lon'])
@@ -61,11 +61,15 @@ class Player(Entity):
 
     
     def update_health(self, change, positive):
-        if positive:
+        change = int(change)
+        result = self.hp + change
+        if positive and self.max_hp > result:
             self.hp = self.hp + change
+        elif positive and self.max_hp <= result:
+            self.hp = self.max_hp
         else:
             self.hp = self.hp - change
-        change = update_player_health(self.id, change)
+        change = update_player_health(self.id, change, positive)
         if change:
             return True
         else:

@@ -179,3 +179,32 @@ span:hover {
     width: 3%;
     font-size: 0.5rem;
 }
+
+#event_modal {
+    padding: 20px;
+    width: 350px;
+    border-radius: 8px;
+}
+
+#close_event_modal {
+    float: right;
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#event_description {
+    margin-bottom: 15px;
+}
+
+#event_answer_input {
+    width: 90%;
+    padding: 8px;
+    margin-bottom: 15px;
+}
+
+#event_buttons button {
+    padding: 8px 15px;
+    cursor: pointer;
+}

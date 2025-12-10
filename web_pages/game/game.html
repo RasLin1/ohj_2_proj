@@ -10,7 +10,7 @@
 </head>
 <body>
 <section id="actions">
-    <button type="button" id="move">Move</button>
+    <button type="button" id="shop">Shop</button>
     <button type="button" id="items">Items</button>
     <button type="button" id="rest">Rest</button>
     <button type="button" id="fight">Fight</button>
@@ -37,10 +37,13 @@
             <li id="turns">N/A</li>
         </ul>
     </section>
+    <section id="enemy_distances">
+        <ul id="distance_list">
+
+        </ul>
+    </section>
     <section id="game_text">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque debitis, dicta distinctio doloremque expedita
-            fuga fugiat id magnam magni nemo nobis, omnis optio, quo ratione repudiandae sint suscipit tenetur
-            vitae.</p>
+
     </section>
 </div>
 
@@ -77,5 +80,29 @@
             </ul>
         </dialog>
     </div>
+</div>
+
+<div id="event_screen">
+    <dialog id="event_modal">
+        <button type="button" id="close_event_modal">&#x2715;</button>
+        <section id="event_description_section">
+            <p id="event_description">Description goes here</p>
+        </section>
+        <section id="event_input">
+            <input type="text" id="event_answer_input" placeholder="Type your answer...">
+        </section>
+        <section id="event_buttons">
+            <button type="button" id="submit_event_answer">Submit</button>
+        </section>
+        <section id="event_result_section">
+            <p id="event_result"></p>
+        </section>
+    </dialog>
+</div>
+
+<div>
+    <dialog id="shop_modal">
+        <span id="shopX">&#x2715;</span>
+    </dialog>
 </div>
 </html>

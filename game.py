@@ -8,28 +8,23 @@ from flask import Flask, request, json
 from flask_cors import CORS
 from classes.db_classes.enemy_queries import select_specific_creature, update_creature_captured_status
 from classes.db_classes.player_queries import select_specific_player
-from classes.db_classes.entity_manager import ActiveEntities
 app = Flask(__name__)
 CORS(app)
 
 GAME_STATE = {}
-active_entities = ActiveEntities()
+
 @app.route("/mh_game/startGame")
 def startGame():
-
     player_name = request.args.get("name", "Anonymous")
-
     monster_amount = 3
     player = Player(player_name ,select_random_airport_location())
-    active_entities.players.append(player)
     enemies = [Enemy(select_random_airport_location(), player.id) for i in range(monster_amount)]
-    active_entities.ennemies.append(enemies)
     GAME_STATE[player.id] =  {
         "player": player,
         "enemies": enemies,
-        "round": 1
+        "turns": 100
     }
-    return json.dumps({"player_id": player.id,"player": player.__dict__})
+    return json.dumps({"player_id": player.id,"player": player.__dict__, "turns": GAME_STATE[player.id]["turns"]})
 
 @app.route("/mh_game/selectAllAirports")
 def selectAllAirports():
@@ -74,17 +69,45 @@ def movePlayer():
         return json.dumps({"Error": "Move processing error"})
 
     #Response if successful and updates round
-    GAME_STATE[player_id]["round"] += 1
+    GAME_STATE[player_id]["turns"] = GAME_STATE[player_id]["turns"] - 1
     response = {
         "player": player.__dict__,
-        "target_airport": target_airport
+        "target_airport": target_airport,
+        "turns": GAME_STATE[player_id]["turns"]
+    }
+
+    return json.dumps(response)
+
+@app.route("/mh_game/healPlayer")
+def healPlayer():
+    #Validates player id
+    player_id = request.args.get("pid")
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
+    if not player_id or player_id not in GAME_STATE:
+        return json.dumps({"Error": "Missing or invalid id"})
+    change = request.args.get("change")
+    player = GAME_STATE[player_id]["player"]
+    result = player.update_health(change, True)
+    if result:
+        response = {
+        "player": player.__dict__,
+        "result": result
     }
 
     return json.dumps(response)
 
 @app.route("/mh_game/moveEnemies")
 def moveEnemies():
+    #Validates player id
     player_id = request.args.get("pid")
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
+
     if not player_id or player_id not in GAME_STATE:
         return json.dumps({"Error": "Missing or invalid id"})
     decision_list = []
@@ -140,13 +163,45 @@ def moveEnemies():
             decision_list.append(response)
     return json.dumps(decision_list)
 
+@app.route("/mh_game/enemyDistances")
+def enemyDistances():
+    #Validates player id
+    player_id = request.args.get("pid")
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
+    if not player_id or player_id not in GAME_STATE:
+        return json.dumps({"Error": "Missing or invalid id"})
+    player = GAME_STATE[player_id]["player"]
+    distances = []
+    for x in GAME_STATE[player_id]["enemies"]:
+        try:
+            distance = current_distance(player.cordinates, x.cordinates)
+            #Starts a close move
+            response = {
+                    "enemy": x.id,
+                    "distance": distance
+                }
+            distances.append(response)
+        except Exception as e:
+            #Should work as an error log
+            print("ERROR while moving enemy:", e)
+            response = {
+                "enemy": x.id,
+                "decision": "Error",
+                "error": str(e)
+            }
+            distances.append(response)
+    return json.dumps(distances)
+
 #Gets rand event from db and returns it's id and description
 @app.route("/mh_game/getRandomEvent")
 def getRandomEvent():
     try:
         event = select_random_event()
         response = {
-            "id": event["event_id"],
+            "id": int(event["event_id"]),
             "description": event["event_description"],
         }
     #Should run if event is false
@@ -161,15 +216,25 @@ def getRandomEvent():
 def checkEventAnswer():
     #Lots of error handling and requesting args
     player_id = request.args.get("pid")
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
     if not player_id or player_id not in GAME_STATE:
         return json.dumps({"Error": "Missing or invalid player id"})
     event_id = request.args.get("eid")
+    try:
+        event_id = int(event_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
     if not event_id:
         return json.dumps({"Error": "Missing event id"})
     user_answer = request.args.get("answer")
     if not user_answer:
         return json.dumps({"Error": "Missing user answer"})
+    print(f"Event id: {event_id}")
     event = select_specific_event(event_id)
+    print(f"Event check retourn: {event}")
     if not event:
         return json.dumps({"Error": "Failed retrival of event"})
     #Starts if answer is correct
@@ -177,7 +242,7 @@ def checkEventAnswer():
         #Gets the player
         player = GAME_STATE[player_id]["player"]
         #Updates the appropriate value for object and in db
-        player.update_other_value(event["event_reward_type"], event["event_reward_value"], True)
+        player.update_other_value(event["event_reward_value"], event["event_reward_type"], True)
         #Self explanatory response
         response = {
             "result": True,
@@ -195,9 +260,44 @@ def checkEventAnswer():
 
 
 
+@app.route("/mh_game/allowCombat")
+def allowCombat():
+    #tämän pitäisi runnata kerran move phasen loputtua.
+    player_id = request.args.get("pid")
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
+    for x in GAME_STATE[player_id]["enemies"]:
+        if GAME_STATE[player_id]["player"]["location"] == x["location"]:
+            response = {
+                "result": True,
+                "enemy": x.__dict__,
+            }
+            return json.dumps(response)
+    response = {
+        "result": False
+    }
+    return json.dumps(response)
+
 @app.route("/mh_game/combat/<player>/<enemy>")
-def combat_start(player,enemy):
- #tämän pitäisi runnata kerran move phasen loputtua.
+def combat_start():
+    #tämän pitäisi runnata kerran move phasen loputtua.
+    player_id = request.args.get("pid")
+    for x in GAME_STATE[player_id]["enemies"]:
+        if GAME_STATE[player_id]["player"]["location"] == x["location"]:
+            response = {
+                "result": True,
+                "enemy": x.__dict__,
+            }
+            return json.dumps(response)
+    response = {
+        "result": False
+    }
+    return json.dumps(response)
+
+ 
+"""
   p_stats = select_specific_player(player)
   e_stats = select_specific_creature(enemy)
   print("p_stats",p_stats)
@@ -213,80 +313,55 @@ def combat_start(player,enemy):
 
   else:
         return {"Testi":"False"}
-
-@app.route("/mh_game/attack/")
-def attack():
-    #monster_health = enemy.update_health(player.dmg)
-    player_id = request.args.get("pid")
-    try:
-        player_id =int(player_id)
-    except (TypeError,ValueError):
-        return json.dumps(({"Error": "the id is missing or invalid"}))
-    for i in GAME_STATE[player_id]["enemies"]:
-        if GAME_STATE[player_id]["player"]["location"]==i["location"]:
-           result = i.update_health(GAME_STATE[player_id]["player"].dmg)
-
-           response = {
-               "enemy": i
-
-
-           }
+"""
+@app.route("/mh_game/attack/<player>/<enemy>")
+def attack(player,enemy):
+    monster_health = enemy.update_health(player.dmg)
 
 
 
 
-           return json.dumps(response)
-@app.route("/mh_game/monsterAttack/")
-def monster_attack():
-    player_id = request.args.get("pid")
-    try:
-        player_id = int(player_id)
-    except (TypeError, ValueError):
-        return json.dumps(({"Error": "the id is missing or invalid"}))
-    player = GAME_STATE[player_id]["player"]
-    for x in GAME_STATE[player_id]["enemies"]:
-        if player["location"] == x["location"]:
-            player.update_health(x.dmg)
-            response = {
-                "player":player.__dict__
-            }
-            return json.dumps(response)
-    response = {
-        "result": False
-    }
+
+    return json.dumps(monster_health)
+@app.route("/mh_game/monsterAttack/<player>/<enemy>")
+def monster_attack(player,enemy):
+    player_health = player.update_health(enemy.dmg)
 
 
-    return json.dumps(response)
+    return json.dumps(player_health)
 
-@app.route("/mh_game/capture/")
+@app.route("/mh_game/capture/<enemy>")
 def capture(enemy):
-    player_id = request.args.get("pid")
-    try:
-        player_id = int(player_id)
-    except (TypeError, ValueError):
-        return json.dumps(({"Error": "the id is missing or invalid"}))
 
     if enemy.hp<=0:
 
         captured = update_creature_captured_status(enemy.id, True)
-        return json.dumps({"Captured":captured})
+        return captured
 
 
     else:
 
-       capture_chance = 60-(enemy.hp+2)/2
+       capture_chance = 60-(enemy.hp+2
 
+
+
+
+
+
+
+
+                         )/2
        random_value = random.randint(1,100)
 
        if random_value<=capture_chance:
 
           #capture sucess
           captured = update_creature_captured_status(enemy.id, True)
-          return json.dumps({"Captured":captured})
+          return captured
 
     #idea on että tän booli mukaan päätetään napataanko hirviön
        else:
-          return json.dumps({"Captured":"False"})
+          return False
 
 
 @app.route("/mh_game/items/<player>")

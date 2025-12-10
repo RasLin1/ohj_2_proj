@@ -34,7 +34,10 @@ button {
 h3 {
     justify-content: center;
     display: flex;
-    margin: 0.5rem;
+    margin: 1rem;
+    border: 0.05rem solid white;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 #quit {
@@ -48,17 +51,32 @@ h3 {
 #stats {
     display: flex;
     flex-wrap: wrap;
-    padding-left: 3rem;
+    margin: 1rem;
+    padding-left: 2rem;
+    border: 0.05rem solid white;
 }
 
 ul {
     list-style-type: none;
 }
 
-#game_text {
-    height: 68%;
+#enemy_distances {
+    height: 8%;
     margin: 1rem;
     padding: 1rem;
+    border: 0.05rem solid white;
+}
+
+#distance_list {
+    margin: 0;
+    padding: 0;
+}
+
+#game_text {
+    height: 50%;
+    margin: 1rem;
+    padding: 1rem;
+    border: 0.05rem solid white;
 }
 
 #item_list {
@@ -98,48 +116,62 @@ span:hover {
 #battle {
     width: 100%;
     background-color: #4a2023;
-    height: 45rem;
-    background-image: url('placeholderMonster.png'), linear-gradient(black, transparent);
+    height: 100%;
+    background-image: url('html_visual_assets/Head.png'), url('html_visual_assets/Torso.png'), url('html_visual_assets/Tail.png'), url('html_visual_assets/BG.png');
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: 47% -8%, center, 45% 100%, center;
+    background-size: 20%, 35%, 40%, 100%;
+    animation: mymove 3s infinite;
+}
+
+@keyframes mymove {
+    70% {background-position: 47% -10%, center 45%, 44% 100%, center;}
 }
 
 #monster_hp {
     position: absolute;
+    border-radius: 0.5rem;
     top: 2rem;
     left: 10%;
     display: flex;
     flex-wrap: wrap;
-    width: 8%;
+    width: 15%;
     justify-content: space-evenly;
-    background-color: rgba(181, 78, 86, 0.4)
+    background-color: rgb(1, 7, 25, 40%);
+    border: 0.05rem solid rgba(255, 255, 255, 0.40);
 }
 
 #battle p {
     margin: 0.5rem;
     color: white;
+    font-size: 1.5rem;
 }
 
 #player_hp {
     position: absolute;
+    border-radius: 0.5rem;
     bottom: 6rem;
-    right: 10%;
+    right: 9%;
     display: flex;
     flex-wrap: wrap;
-    width: 8%;
+    width: 15%;
     justify-content: space-evenly;
-    background-color: rgba(181, 78, 86, 0.4)
+    background-color: rgb(1, 7, 25, 40%);
+    border: 0.05rem solid rgba(255, 255, 255, 0.40);
 }
 
 #turn_options {
     width: 80%;
-    background-color: rgba(181, 78, 86, 0.4);
+    background-color: rgb(1, 7, 25, 40%);
     display: flex;
     justify-content: space-evenly;
-    margin-left: 10%;
+    margin-left: 8%;
+    border-radius: 1rem;
     position: absolute;
     bottom: 1rem;
     padding: 1rem;
+    border: 0.05rem solid white;
+
 }
 
 #battle button {
@@ -178,4 +210,45 @@ span:hover {
     right: 0;
     width: 3%;
     font-size: 0.5rem;
+}
+
+#event_modal {
+    position: absolute;
+    left: 75%;
+    top: 41%;
+    width: 20.7%;
+    height: 50%;
+    margin: 1rem;
+    padding: 1rem;
+    border: 0.05rem solid white;
+    background: black;
+}
+
+#close_event_modal {
+    position: absolute;
+    float: right;
+    right: 2%;
+    border: none;
+    background: none;
+    width: 10%;
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+#event_description {
+    margin-bottom: 15px;
+    color: white;
+}
+
+#event_answer_input {
+    width: 90%;
+    padding: 8px;
+    margin-bottom: 15px;
+    margin-left: 0.3rem;
+}
+
+#event_buttons button {
+    padding: 8px 15px;
+    cursor: pointer;
 }

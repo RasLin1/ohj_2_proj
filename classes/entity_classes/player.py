@@ -78,15 +78,15 @@ class Player(Entity):
     def update_other_value(self, val, type, positive):
         if type == "fuel":
             if positive:
-                self.fuel = self.fuel + val
+                self.fuel = self.fuel + int(val)
             else:
-                self.fuel = self.fuel - val
+                self.fuel = self.fuel - int(val)
             change = update_player_value(type, self.fuel, self.id)
         elif type == "money":
             if positive:
-                self.money = self.money + val
+                self.money = self.money + int(val)
             else:
-                self.money = self.money - val
+                self.money = self.money - int(val)
             change = update_player_value(type, self.fuel, self.id)
         if change:
             return True

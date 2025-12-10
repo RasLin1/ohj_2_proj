@@ -242,7 +242,7 @@ def checkEventAnswer():
         #Gets the player
         player = GAME_STATE[player_id]["player"]
         #Updates the appropriate value for object and in db
-        player.update_other_value(event["event_reward_type"], event["event_reward_value"], True)
+        player.update_other_value(event["event_reward_value"], event["event_reward_type"], True)
         #Self explanatory response
         response = {
             "result": True,

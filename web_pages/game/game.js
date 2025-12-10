@@ -120,7 +120,7 @@ document.getElementById("submit_event_answer").addEventListener('click', async f
         fuel.textContent = data.player.fuel;
       }
       else if (data.reward_type == "money"){
-        hp.textContent = data.player.hp;
+        money.textContent = data.player.money;
       }
   } else {
       document.getElementById("event_result").innerText = `Incorrect | Answer was: ${data.correct_answer}`;
@@ -141,7 +141,7 @@ async function combatStart(){
     }
 
     sessionStorage.setItem("enemy_id", data.enemy_id)
-    window.location.href = "battle/battle.html"
+    document.getElementById("battle").showModal();
 
 
   }catch (error){

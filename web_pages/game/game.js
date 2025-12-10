@@ -1,6 +1,6 @@
 'use strict';
 
-const move = document.getElementById('move');
+const move = document.getElementById('shop');
 const items = document.getElementById('items');
 const rest = document.getElementById('rest');
 const fight = document.getElementById('fight');
@@ -185,6 +185,10 @@ fight.addEventListener('click', function() {
   if (start_fight === true) {
     document.getElementById("battle").showModal();
   }
+});
+
+shop.addEventListener('click', function() {
+  document.getElementById("event_modal").showModal();
 });
 
 document.getElementById("quit_battle").addEventListener("click", () => {

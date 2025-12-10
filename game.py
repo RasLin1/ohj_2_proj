@@ -8,17 +8,22 @@ from flask import Flask, request, json
 from flask_cors import CORS
 from classes.db_classes.enemy_queries import select_specific_creature, update_creature_captured_status
 from classes.db_classes.player_queries import select_specific_player
+from classes.db_classes.entity_manager import ActiveEntities
 app = Flask(__name__)
 CORS(app)
 
 GAME_STATE = {}
-
+active_entities = ActiveEntities()
 @app.route("/mh_game/startGame")
 def startGame():
+
     player_name = request.args.get("name", "Anonymous")
+
     monster_amount = 3
     player = Player(player_name ,select_random_airport_location())
+    active_entities.players.append(player)
     enemies = [Enemy(select_random_airport_location(), player.id) for i in range(monster_amount)]
+    active_entities.ennemies.append(enemies)
     GAME_STATE[player.id] =  {
         "player": player,
         "enemies": enemies,
@@ -209,54 +214,79 @@ def combat_start(player,enemy):
   else:
         return {"Testi":"False"}
 
-@app.route("/mh_game/attack/<player>/<enemy>")
-def attack(player,enemy):
-    monster_health = enemy.update_health(player.dmg)
+@app.route("/mh_game/attack/")
+def attack():
+    #monster_health = enemy.update_health(player.dmg)
+    player_id = request.args.get("pid")
+    try:
+        player_id =int(player_id)
+    except (TypeError,ValueError):
+        return json.dumps(({"Error": "the id is missing or invalid"}))
+    for i in GAME_STATE[player_id]["enemies"]:
+        if GAME_STATE[player_id]["player"]["location"]==i["location"]:
+           result = i.update_health(GAME_STATE[player_id]["player"].dmg)
+
+           response = {
+               "enemy": i
+
+
+           }
 
 
 
 
+           return json.dumps(response)
+@app.route("/mh_game/monsterAttack/")
+def monster_attack():
+    player_id = request.args.get("pid")
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps(({"Error": "the id is missing or invalid"}))
+    player = GAME_STATE[player_id]["player"]
+    for x in GAME_STATE[player_id]["enemies"]:
+        if player["location"] == x["location"]:
+            player.update_health(x.dmg)
+            response = {
+                "player":player.__dict__
+            }
+            return json.dumps(response)
+    response = {
+        "result": False
+    }
 
-    return json.dumps(monster_health)
-@app.route("/mh_game/monsterAttack/<player>/<enemy>")
-def monster_attack(player,enemy):
-    player_health = player.update_health(enemy.dmg)
 
+    return json.dumps(response)
 
-    return json.dumps(player_health)
-
-@app.route("/mh_game/capture/<enemy>")
+@app.route("/mh_game/capture/")
 def capture(enemy):
+    player_id = request.args.get("pid")
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps(({"Error": "the id is missing or invalid"}))
 
     if enemy.hp<=0:
 
         captured = update_creature_captured_status(enemy.id, True)
-        return captured
+        return json.dumps({"Captured":captured})
 
 
     else:
 
-       capture_chance = 60-(enemy.hp+2
+       capture_chance = 60-(enemy.hp+2)/2
 
-
-
-
-
-
-
-
-                         )/2
        random_value = random.randint(1,100)
 
        if random_value<=capture_chance:
 
           #capture sucess
           captured = update_creature_captured_status(enemy.id, True)
-          return captured
+          return json.dumps({"Captured":captured})
 
     #idea on että tän booli mukaan päätetään napataanko hirviön
        else:
-          return False
+          return json.dumps({"Captured":"False"})
 
 
 @app.route("/mh_game/items/<player>")

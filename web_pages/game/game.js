@@ -96,3 +96,179 @@ fight.addEventListener('click', function() {
 document.addEventListener("DOMContentLoaded", () => {
   startGame();
 })
+
+const start = []
+async function CombatStart(){
+
+
+  try {
+    const response = await fetch('http://127.0.0.1:3000/mh_game/combat/114/234')
+    const statsData = await response.json()
+
+    console.log(statsData)
+    if(statsData ==="False") {
+
+      console.log(`Hirviö ei ole samassa paikka eli : ${statsData}`)
+
+
+    }
+
+    else {
+
+      monster_name.innerText = statsData.enemy_stats.name
+      monster_hp.innerText = statsData.enemy_stats.health
+      player_name.innerText = statsData.player_stats.name
+      player_hp.innerText = statsData.player_stats.health
+
+    }
+
+
+  }catch (error){
+
+    console.log(error)
+  }
+
+}
+
+async function Attack(){
+
+ const p_id =sessionStorage.getItem("player_id")
+
+  try {
+    //const response = await fetch('http://127.0.0.1:3000/mh_game/attack/active_entities.players[1]/active_entities.active_ennemies[0]')
+    const  response  = await fetch(`${gameApiLink}/attack?pid=${p_id}`)
+    const statsData = await response.json()
+
+    console.log(statsData)
+
+
+    monster_hp.innerText =statsData.enemy.hp
+
+
+
+
+
+  }catch (error){
+
+    console.log(error)
+  }
+
+}
+
+async function MonsterAttack(){
+const p_id= sessionStorage.getItem("player_id")
+
+  try {
+   // const response = await fetch('http://127.0.0.1:3000/mh_game/monsterAttack/114/234')
+    const  response  = await fetch(`${gameApiLink}/monsterAttack?pid=${p_id}`)
+    const statsData = await response.json()
+
+    console.log(statsData)
+
+    player_hp.innerText = statsData.player.hp
+
+
+
+  }catch (error){
+
+    console.log(error)
+  }
+
+}
+
+async function Capture(){
+const  p_id = sessionStorage.getItem("player_id")
+
+  try {
+    //const response = await fetch('http://127.0.0.1:3000/mh_game/capture/114/234')
+    const  response  = await fetch(`${gameApiLink}/capture?pid=${p_id}`)
+    const statsData = await response.json()
+
+    if(statsData.Captured === true) {
+
+      console.log(`${statsData}`)
+
+      document.getElementById('battle').close()
+      alert('Monster succesfully hunted')
+
+    }
+    else {
+    console.log("Monster has not been captured")
+    }
+
+
+
+  }catch (error){
+
+    console.log(error)
+  }
+
+
+
+
+
+}
+
+async function Items(){
+
+
+  try {
+    const response = await fetch('http://127.0.0.1:3000/mh_game/items/114/234')
+    const statsData = await response.json()
+
+    console.log(statsData)
+   // monster_name.innerText= statsData.enemy_stats.name
+    //monster_hp.innerText = statsData.enemy_stats.health
+    //player_name.innerText = statsData.player_stats.name
+    //player_hp.innerText = statsData.player_stats.health
+
+
+
+  }catch (error){
+
+    console.log(error)
+  }
+
+}
+
+
+async function Run(){
+
+
+  try {
+    const response = await fetch('http://127.0.0.1:3000/mh_game/run/114/234')
+    const statsData = await response.json()
+
+    if(statsData==="True"){
+      //poista combat ui
+    monster_name.innerText= '';
+    monster_hp.innerText = '';
+    player_name.innerText = '';
+    player_hp.innerText = '';
+   window.location.href = 'game/game.html';
+
+    }
+    else {
+
+
+
+    }
+
+
+
+  }catch (error){
+
+    console.log(error)
+  }
+
+}
+
+
+
+
+attack()
+
+
+
+
+

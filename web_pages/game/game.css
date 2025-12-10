@@ -60,8 +60,20 @@ ul {
     list-style-type: none;
 }
 
+#enemy_distances {
+    height: 8%;
+    margin: 1rem;
+    padding: 1rem;
+    border: 0.05rem solid white;
+}
+
+#distance_list {
+    margin: 0;
+    padding: 0;
+}
+
 #game_text {
-    height: 65%;
+    height: 50%;
     margin: 1rem;
     padding: 1rem;
     border: 0.05rem solid white;
@@ -201,27 +213,39 @@ span:hover {
 }
 
 #event_modal {
-    padding: 20px;
-    width: 350px;
-    border-radius: 8px;
+    position: absolute;
+    left: 75%;
+    top: 41%;
+    width: 20.7%;
+    height: 50%;
+    margin: 1rem;
+    padding: 1rem;
+    border: 0.05rem solid white;
+    background: black;
 }
 
 #close_event_modal {
+    position: absolute;
     float: right;
+    right: 2%;
     border: none;
     background: none;
+    width: 10%;
     font-size: 20px;
     cursor: pointer;
+    color: white;
 }
 
 #event_description {
     margin-bottom: 15px;
+    color: white;
 }
 
 #event_answer_input {
     width: 90%;
     padding: 8px;
     margin-bottom: 15px;
+    margin-left: 0.3rem;
 }
 
 #event_buttons button {

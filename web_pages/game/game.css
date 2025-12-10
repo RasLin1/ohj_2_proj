@@ -98,7 +98,7 @@ span:hover {
 #battle {
     width: 100%;
     background-color: #4a2023;
-    height: 45rem;
+    height: 100%;
     background-image: url('placeholderMonster.png'), linear-gradient(black, transparent);
     background-repeat: no-repeat;
     background-position: center;

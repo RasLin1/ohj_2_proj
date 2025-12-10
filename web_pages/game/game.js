@@ -98,7 +98,7 @@ async function getEvent() {
   const response = await fetch(`${gameApiLink}/getRandomEvent`);
   const data = await response.json();
   console.log("Event data:", data);
-  sessionStorage.setItem("current_event_id", data.event_id);
+  sessionStorage.setItem("current_event_id", data.id);
   document.getElementById("event_description").innerText = data.description;
   document.getElementById("event_answer_input").value = "";
   document.getElementById("event_result").innerText = "";
@@ -109,6 +109,7 @@ document.getElementById("submit_event_answer").addEventListener('click', async f
   const event_id = sessionStorage.getItem("current_event_id");
   const player_id = sessionStorage.getItem("player_id");
   const answer = document.getElementById("event_answer_input").value;
+  console.log("Sending pid:", player_id, "eid:", event_id, "answer:", answer);
   const response = await fetch(`${gameApiLink}/checkEventAnswer?pid=${player_id}&eid=${event_id}&answer=${answer}`);
   const data = await response.json(); 
   console.log("Answer result:", data);
@@ -182,9 +183,14 @@ fight.addEventListener('click', function() {
   //add a check to see if its possible to fight
   let start_fight = confirm('Are you sure you want to fight?');
   if (start_fight === true) {
-    window.location.href = 'battle/battle.html';
+    document.getElementById("battle").showModal();
   }
 });
+
+document.getElementById("quit_battle").addEventListener("click", () => {
+  document.getElementById("battle").close();
+});
+
 
 document.getElementById("close_event_modal").addEventListener("click", () => {
   document.getElementById("event_modal").close();

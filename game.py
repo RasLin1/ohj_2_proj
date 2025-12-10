@@ -201,7 +201,7 @@ def getRandomEvent():
     try:
         event = select_random_event()
         response = {
-            "id": event["event_id"],
+            "id": int(event["event_id"]),
             "description": event["event_description"],
         }
     #Should run if event is false
@@ -216,15 +216,25 @@ def getRandomEvent():
 def checkEventAnswer():
     #Lots of error handling and requesting args
     player_id = request.args.get("pid")
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
     if not player_id or player_id not in GAME_STATE:
         return json.dumps({"Error": "Missing or invalid player id"})
     event_id = request.args.get("eid")
+    try:
+        event_id = int(event_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
     if not event_id:
         return json.dumps({"Error": "Missing event id"})
     user_answer = request.args.get("answer")
     if not user_answer:
         return json.dumps({"Error": "Missing user answer"})
+    print(f"Event id: {event_id}")
     event = select_specific_event(event_id)
+    print(f"Event check retourn: {event}")
     if not event:
         return json.dumps({"Error": "Failed retrival of event"})
     #Starts if answer is correct
@@ -254,6 +264,10 @@ def checkEventAnswer():
 def allowCombat():
     #tämän pitäisi runnata kerran move phasen loputtua.
     player_id = request.args.get("pid")
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
     for x in GAME_STATE[player_id]["enemies"]:
         if GAME_STATE[player_id]["player"]["location"] == x["location"]:
             response = {

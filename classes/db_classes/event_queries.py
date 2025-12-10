@@ -30,7 +30,7 @@ def select_random_event():
 
 def select_specific_event(id):
     db = db_connection()
-    specific_event_query = f"SELECT * FROM events WHERE event_id = %s LIMIT 1 OFFSET "
+    specific_event_query = f"SELECT * FROM events WHERE event_id = %s"
     try: 
         cursor = db.cursor(dictionary=True)
         cursor.execute(specific_event_query, (id,))

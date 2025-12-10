@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 <body>
+<audio id='main_music' src="music/forest02_alt.wav" loop></audio>
 <section id="actions">
     <button type="button" id="shop">Shop</button>
     <button type="button" id="items">Items</button>
@@ -56,6 +57,7 @@
 </dialog>
 
 <div id="battle_screen">
+    <audio id='battle_music' src="music/8bit_battle02.wav" loop></audio>
     <dialog id="battle">
         <button type="button" id="quit_battle">&#x2715;</button>
         <section id="monster_hp">

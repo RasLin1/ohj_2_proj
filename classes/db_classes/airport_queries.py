@@ -26,7 +26,8 @@ def select_random_airport_location():
 #Ottaa lentokenttä  icao koodin  inputtina  ja hakee sen  kentokentän tietokannasta. 
 def select_specific_airport(icao):
     db = db_connection()
-    airport_query = "SELECT airport.name AS a_name, airport.ident AS airport_icao, airport.latitude_deg AS lat, airport.longitude_deg AS lon, country.name AS c_name FROM airport INNER JOIN country ON airport.iso_country = country.iso_country WHERE airport.type = 'large_airport' AND airport.continent =  'EU' AND ident = %s"
+    airport_query = "SELECT airport.name AS a_name, airport.ident AS airport_icao, airport.latitude_deg AS lat, airport.longitude_deg AS lon, country.name AS c_name FROM airport INNER JOIN country ON airport.iso_country = country.iso_country WHERE ident = %s"
+    print(f"Target icao: {icao}")
     try: 
         cursor = db.cursor(dictionary=True)
         cursor.execute(airport_query, (icao,))

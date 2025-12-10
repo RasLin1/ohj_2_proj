@@ -6,20 +6,7 @@ from functions.game_functions import probe_interaction, select_closest_airports,
 import random
 from flask import Flask, request, json
 
-app = Flask(__name__)
-
-# MUOKATTU J: tarvitaan html-tiedostojen näyttämiseen Flaskilla
-from flask import send_from_directory
-import os
-
-# MUOKATTU J: määritetään polku web_pages-kansioon
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# MUOKATTU J: sallitaan html-tiedostojen tarjoilu selaimelle
-@app.route('/web_pages/<path:filename>')
-def serve_web_pages(filename):
-    return send_from_directory(os.path.join(BASE_DIR, 'web_pages'), filename)
-
+app = Flask(__name__, static_folder="web_pages")
 
 GAME_STATE = {}
 
@@ -28,7 +15,8 @@ def startGame():
     player_name = request.args.get("name", "Anonymous")
     monster_amount = 3
     player = Player(player_name ,select_random_airport_location())
-    enemies = [Enemy(select_random_airport_location(), player.id) for i in range(monster_amount)]
+    # monster{i}
+    enemies = [Enemy(f"Monster{i}",select_random_airport_location(), player.id) for i in range(monster_amount)]
     GAME_STATE[player.id] =  {
         "player": player,
         "enemies": enemies,

@@ -109,7 +109,7 @@ def update_creature_health(id, health_change):
 
 def update_creature_captured_status(id, status_change):
     db = db_connection()
-    update_player_query = f"UPDATE game_creature SET creature_captured = %s WHERE id = %s"
+    update_player_query = f"UPDATE game_creatures SET creature_captured = %s WHERE id = %s"
     try: 
         cursor = db.cursor(dictionary=True)
         cursor.execute(update_player_query, (status_change, id))

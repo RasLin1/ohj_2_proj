@@ -268,13 +268,14 @@ def allowCombat():
     except (TypeError, ValueError):
         return json.dumps({"Error": "Missing or invalid id"})
     player = GAME_STATE[player_id]["player"]
-    for x in GAME_STATE[player_id]["enemies"]:
-        if GAME_STATE[player_id]["player"]["location"] == x["location"]:
+    for enemy in GAME_STATE[player_id]["enemies"]:
+        if player.location == enemy.location:
             response = {
                 "result": True,
-                "enemy": x.__dict__,
+                "enemy": enemy.__dict__,
                 "player": player.__dict__
             }
+            print("ALLOW COMBAT RETURN:", response)
             return json.dumps(response)
     response = {
         "result": False
@@ -299,54 +300,104 @@ def allowCombat():
   else:
         return {"Testi":"False"}
 """
-@app.route("/mh_game/attack/<player>/<enemy>")
-def attack(player,enemy):
-    monster_health = enemy.update_health(player.dmg)
+@app.route("/mh_game/playerAttack")
+def playerAttack():
+    player_id = request.args.get("pid")
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
+    player = GAME_STATE[player_id]["player"]
+    for enemy in GAME_STATE[player_id]["enemies"]:
+        if player.location == enemy.location:
+            enemy.update_health(player.dmg)
+            response = {
+                "result": True,
+                "enemy": enemy.__dict__,
+                "player": player.__dict__
+            }
+            print(response)
+            return json.dumps(response)
+    response = {
+        "result": False
+    }
+    return json.dumps(response)
 
 
 
 
 
     return json.dumps(monster_health)
-@app.route("/mh_game/monsterAttack/<player>/<enemy>")
-def monster_attack(player,enemy):
-    player_health = player.update_health(enemy.dmg)
+@app.route("/mh_game/monsterAttack")
+def monsterAttack():
+    player_id = request.args.get("pid")
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps({"Error": "Missing or invalid id"})
+    player = GAME_STATE[player_id]["player"]
+    for enemy in GAME_STATE[player_id]["enemies"]:
+        if player.location == enemy.location:
+            player.update_health(enemy.dmg, False)
+            response = {
+                "result": True,
+                "enemy": enemy.__dict__,
+                "player": player.__dict__
+            }
+            return json.dumps(response)
+    response = {
+        "result": False
+    }
+    return json.dumps(response)
 
+@app.route("/mh_game/captureEnemy")
+def captureEnemy():
+    player_id = request.args.get("pid")
 
-    return json.dumps(player_health)
+    try:
+        player_id = int(player_id)
+    except (TypeError, ValueError):
+        return json.dumps({"result": False, "error": "invalid_id"})
 
-@app.route("/mh_game/capture/<enemy>")
-def capture(enemy):
+    player = GAME_STATE[player_id]["player"]
+    enemies = GAME_STATE[player_id]["enemies"]
 
-    if enemy.hp<=0:
+    # Look for enemy at player's location
+    enemy = next((e for e in enemies if e.location == player.location), None)
 
-        captured = update_creature_captured_status(enemy.id, True)
-        return captured
+    # --- FIX 1: prevent crash if enemy is None ---
+    if enemy is None:
+        return json.dumps({
+            "result": False,
+            "captured": False,
+            "error": "no_enemy_here"
+        })
 
+    # If dead → auto-capture
+    if enemy.hp <= 0:
+        enemy.update_status(True)
+        enemies.remove(enemy)
+        return json.dumps({
+            "result": True,
+            "captured": True
+        })
 
+    # Normal capture chance
+    capture_chance = 60 - (enemy.hp + 2) / 2
+    random_value = random.randint(1, 100)
+
+    if random_value <= capture_chance:
+        enemy.update_status(True)
+        enemies.remove(enemy)
+        return json.dumps({
+            "result": True,
+            "captured": True
+        })
     else:
-
-       capture_chance = 60-(enemy.hp+2
-
-
-
-
-
-
-
-
-                         )/2
-       random_value = random.randint(1,100)
-
-       if random_value<=capture_chance:
-
-          #capture sucess
-          captured = update_creature_captured_status(enemy.id, True)
-          return captured
-
-    #idea on että tän booli mukaan päätetään napataanko hirviön
-       else:
-          return False
+        return json.dumps({
+            "result": True,
+            "captured": False
+        })
 
 
 @app.route("/mh_game/items/<player>")

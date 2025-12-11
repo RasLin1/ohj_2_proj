@@ -17,6 +17,8 @@ const gameApiLink = 'http://127.0.0.1:3000/mh_game';
 const map = L.map('map').setView([51.505, -0.09], 13);
 const music = document.getElementById('main_music');
 const battle_music = document.getElementById('battle_music')
+const attack = document.getElementById('attack')
+const capture = document.getElementById('capture')
 
 music.volume = 0.2;
 music.play();
@@ -143,7 +145,7 @@ async function combatStart() {
   const id = sessionStorage.getItem('player_id');
 
   try {
-    const response = await fetch(`${apiLink}/allowCombat?pid=${id}`);
+    const response = await fetch(`${gameApiLink}/allowCombat?pid=${id}`);
     const data = await response.json();
 
     console.log(data);
@@ -151,123 +153,36 @@ async function combatStart() {
       console.log('No combat allowed');
       return;
     }
-
-    sessionStorage.setItem('enemy_id', data.enemy_id);
-    document.getElementById('battle').showModal();
-    music.pause()
-    battle_music.volume = 0.3
-    battle_music.play()
-
-  } catch (error) {
-
-    console.log(error);
-  }
-}
-
-document.addEventListener('click', async function(event) {
-  //add movement selection functionality
-  if (event.target.classList.contains('move-btn')) {
-    const icao = event.target.dataset.icao;
-    console.log('Moving to: ', icao);
-    await movePlayer(icao);
-    await combatStart();
-    await moveEnemies();
-    await checkDistance();
-  }
-});
-
-items.addEventListener('click', function() {
-  item_list.showModal();
-});
-
-x.addEventListener('click', function() {
-  item_list.close();
-});
-
-rest.addEventListener('click', async function() {
-  //add rest selection functionality
-  let rest_a_turn = confirm('Are you sure you want to rest?');
-  if (rest_a_turn) {
-    await healPlayer(15);
-    await getEvent();
-  }
-});
-
-fight.addEventListener('click', function() {
-  //add a check to see if its possible to fight
-  let start_fight = confirm('Are you sure you want to fight?');
-  if (start_fight === true) {
-    document.getElementById('battle').showModal();
-    music.pause()
-    battle_music.volume = 0.3
-    battle_music.play()
-  }
-});
-
-shop.addEventListener('click', function() {
-  document.getElementById('shop_modal').showModal();
-});
-
-shopX.addEventListener('click', function(){
-  document.getElementById('shop_modal').close();
-})
-
-document.getElementById('quit_battle').addEventListener('click', () => {
-  document.getElementById('battle').close();
-  battle_music.pause()
-  music.play()
-});
-
-document.getElementById('close_event_modal').addEventListener('click', () => {
-  document.getElementById('event_modal').close();
-});
-
-document.addEventListener('DOMContentLoaded', async () => {
-  startGame();
-  checkDistance();
-});
-
-const start = [];
-
-async function CombatStart() {
-
-  try {
-    const response = await fetch('http://127.0.0.1:3000/mh_game/combat/114/234');
-    const statsData = await response.json();
-
-    console.log(statsData);
-    if (statsData === 'False') {
-
-      console.log(`Hirviö ei ole samassa paikka eli : ${statsData}`);
-
-    } else {
-
-      monster_name.innerText = statsData.enemy_stats.name;
-      monster_hp.innerText = statsData.enemy_stats.health;
-      player_name.innerText = statsData.player_stats.name;
-      player_hp.innerText = statsData.player_stats.health;
-
+    else if (data.result) {
+      document.getElementById('monster_name').innerText = data.enemy.name
+      document.getElementById('monster_hp_val').innerText = `HP:${data.enemy.max_hp}/${data.enemy.hp}`
+      document.getElementById('player_hp_val').innerText = `HP:${data.player.max_hp}/${data.player.hp}`
+      document.getElementById('battle').showModal();
+      music.pause()
+      battle_music.volume = 0.3
+      battle_music.play()
     }
+    
 
   } catch (error) {
 
     console.log(error);
   }
-
 }
 
-async function Attack() {
+
+async function playerAttack() {
 
   const p_id = sessionStorage.getItem('player_id');
 
   try {
     //const response = await fetch('http://127.0.0.1:3000/mh_game/attack/active_entities.players[1]/active_entities.active_ennemies[0]')
-    const response = await fetch(`${gameApiLink}/attack?pid=${p_id}`);
-    const statsData = await response.json();
-
-    console.log(statsData);
-
-    monster_hp.innerText = statsData.enemy.hp;
+    const response = await fetch(`${gameApiLink}/playerAttack?pid=${p_id}`);
+    const data = await response.json();
+    console.log(data);
+    document.getElementById('monster_name').innerText = data.enemy.name
+    document.getElementById('monster_hp_val').innerText = `HP:${data.enemy.max_hp}/${data.enemy.hp}`
+    document.getElementById('player_hp_val').innerText = `HP:${data.player.max_hp}/${data.player.hp}`
 
   } catch (error) {
 
@@ -276,17 +191,17 @@ async function Attack() {
 
 }
 
-async function MonsterAttack() {
+async function monsterAttack() {
   const p_id = sessionStorage.getItem('player_id');
 
   try {
     // const response = await fetch('http://127.0.0.1:3000/mh_game/monsterAttack/114/234')
     const response = await fetch(`${gameApiLink}/monsterAttack?pid=${p_id}`);
-    const statsData = await response.json();
-
-    console.log(statsData);
-
-    player_hp.innerText = statsData.player.hp;
+    const data = await response.json();
+    console.log(data);
+    document.getElementById('monster_name').innerText = data.enemy.name
+    document.getElementById('monster_hp_val').innerText = `HP:${data.enemy.max_hp}/${data.enemy.hp}`
+    document.getElementById('player_hp_val').innerText = `HP:${data.player.max_hp}/${data.player.hp}`
 
   } catch (error) {
 
@@ -295,15 +210,15 @@ async function MonsterAttack() {
 
 }
 
-async function Capture() {
+async function captureEnemy() {
   const p_id = sessionStorage.getItem('player_id');
 
   try {
-    //const response = await fetch('http://127.0.0.1:3000/mh_game/capture/114/234')
-    const response = await fetch(`${gameApiLink}/capture?pid=${p_id}`);
+    //const response = await fetch('http://127.0.0.1:3000/mh_game/captureEnemy/114/234')
+    const response = await fetch(`${gameApiLink}/captureEnemy?pid=${p_id}`);
     const statsData = await response.json();
 
-    if (statsData.Captured === true) {
+    if (statsData.captured === true) {
 
       console.log(`${statsData}`);
 
@@ -351,9 +266,9 @@ async function Run() {
     if (statsData === 'True') {
       //poista combat ui
       monster_name.innerText = '';
-      monster_hp.innerText = '';
+      monster_hp_val.innerText = '';
       player_name.innerText = '';
-      player_hp.innerText = '';
+      player_hp_val.innerText = '';
       window.location.href = 'game/game.html';
 
     } else {
@@ -369,3 +284,70 @@ async function Run() {
 
 
 
+
+
+document.addEventListener('click', async function(event) {
+  //add movement selection functionality
+  const combat = false
+  if (event.target.classList.contains('move-btn')) {
+    const icao = event.target.dataset.icao;
+    console.log('Moving to: ', icao);
+    await movePlayer(icao);
+    await moveEnemies();
+    await checkDistance();
+    await combatStart();
+  }
+  console.log(`Combat is: ${combat}`)
+});
+
+items.addEventListener('click', function() {
+  item_list.showModal();
+});
+
+x.addEventListener('click', function() {
+  item_list.close();
+});
+
+rest.addEventListener('click', async function() {
+  //add rest selection functionality
+  let rest_a_turn = confirm('Are you sure you want to rest?');
+  if (rest_a_turn) {
+    await healPlayer(15);
+    await getEvent();
+  }
+});
+
+attack.addEventListener('click', async function() {
+  await playerAttack();
+  await monsterAttack();
+});
+
+capture.addEventListener('click', async function() {
+  await captureEnemy();
+  await monsterAttack();
+});
+
+shop.addEventListener('click', function() {
+  document.getElementById('shop_modal').showModal();
+});
+
+shopX.addEventListener('click', function(){
+  document.getElementById('shop_modal').close();
+})
+
+document.getElementById('quit_battle').addEventListener('click', () => {
+  document.getElementById('battle').close();
+  battle_music.pause()
+  music.play()
+});
+
+document.getElementById('close_event_modal').addEventListener('click', () => {
+  document.getElementById('event_modal').close();
+});
+
+document.addEventListener('DOMContentLoaded', async () => {
+  startGame();
+  checkDistance();
+});
+
+const start = [];
